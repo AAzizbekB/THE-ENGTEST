@@ -21,12 +21,14 @@ const CONTENT = {
     { title: "Reading Test 1", href: "reading-tests/test1.html" },
     { title: "Reading Test 2", href: "reading-tests/test2.html" },
     { title: "Reading Test 3", href: "reading-tests/test3.html" },
+    { title: "Reading Test 4", href: "reading-tests/test4.html" },
   ],
 
   listeningTests: [
     { title: "Listening Test 1", href: "listening-tests/test1.html" },
     { title: "Listening Test 2", href: "listening-tests/test2.html" },
     { title: "Listening Test 3", href: "listening-tests/test3.html" },
+    { title: "Listening Test 4", href: "listening-tests/test4.html" },
   ],
 
   vocab: [
