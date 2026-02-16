@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ENGTEST.COM</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg"></div>
+
+  <aside class="sidebar" aria-label="Sidebar navigation">
+    <div class="brand">
+      <!-- Your logo file in root: logo.png -->
+      <img class="logo" src="logo.png" alt="ENGTEST logo" />
+      <div class="brandText">
+        <div class="brandName">ENGTEST</div>
+        <div class="brandSub">Reading • Listening • Vocab • Grammar</div>
+      </div>
+    </div>
+
+    <section class="profileCard">
+      <div class="profileTop">
+        <div class="avatarWrap">
+          <img id="profileAvatar" class="avatar" alt="Profile avatar" />
+          <div id="profileSticker" class="sticker" title="Sticker"></div>
+        </div>
+
+        <div class="profileMeta">
+          <div class="row">
+            <span class="muted">Name</span>
+          </div>
+          <div class="row gap">
+            <input id="profileName" class="input" type="text" placeholder="Your name" maxlength="22" />
+            <button id="saveProfileBtn" class="btn small">Save</button>
+          </div>
+          <div class="row gap">
+            <label class="fileBtn">
+              <input id="avatarUpload" type="file" accept="image/*" />
+              Change photo
+            </label>
+            <button id="clearAvatarBtn" class="btn small ghost">Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="stickerPicker">
+        <div class="muted smallText">Choose sticker</div>
+        <div class="stickerRow" id="stickerRow" aria-label="Sticker picker"></div>
+      </div>
+    </section>
+
+    <nav class="nav">
+      <button class="navItem active" data-view="home">🏠 Home</button>
+      <button class="navItem" data-view="reading">📘 Reading</button>
+      <button class="navItem" data-view="listening">🎧 Listening</button>
+      <button class="navItem" data-view="vocab">🧠 Vocab</button>
+      <button class="navItem" data-view="grammar">📚 Grammar</button>
+      <button class="navItem" data-view="settings">⚙️ Settings</button>
+    </nav>
+
+    <section class="authCard">
+      <div class="authHeader">
+        <div class="muted">Account (optional)</div>
+        <div id="authStatus" class="chip">Guest</div>
+      </div>
+
+      <div id="authGuest" class="authGrid">
+        <button class="btn" id="openLoginBtn">Log in</button>
+        <button class="btn ghost" id="openSignupBtn">Sign up</button>
+      </div>
+
+      <div id="authUser" class="authGrid hidden">
+        <button class="btn danger" id="logoutBtn">Log out</button>
+      </div>
+
+      <div class="createdBy">
+        <div>Created by <span id="createdByName">ENGTEST Team</span></div>
+        <div>© <span id="yearNow"></span></div>
+      </div>
+    </section>
+  </aside>
+
+  <main class="main">
+   <header class="topbar">
+  <div class="pageTitle" id="pageTitle">Home</div>
+
+  <div class="topRight">
+    <div class="darkModeBox">
+      <span class="darkLabel">Dark</span>
+      <label class="switch darkSwitch">
+        <input type="checkbox" id="darkToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="clockWrap">
+      <div class="clock" id="clock">--:--:--</div>
+      <div class="clockSub" id="clockDate">----</div>
+    </div>
+  </div>
+</header>
+
+
+    <!-- HOME -->
+    <section class="view" id="view-home">
+      <div class="grid2">
+        <div class="card">
+          <div class="cardTitle">Daily Tracker</div>
+          <div class="tracker">
+            <label class="check">
+              <input type="checkbox" id="doneVocab"/>
+              <span>Did vocab today</span>
+            </label>
+            <label class="check">
+              <input type="checkbox" id="doneGrammar"/>
+              <span>Did grammar today</span>
+            </label>
+            <label class="check">
+              <input type="checkbox" id="doneReading"/>
+              <span>Did a reading test</span>
+            </label>
+            <label class="check">
+              <input type="checkbox" id="doneListening"/>
+              <span>Did a listening test</span>
+            </label>
+          </div>
+          <div class="progress">
+            <div class="progressBar"><div id="progressFill" class="progressFill"></div></div>
+            <div class="muted smallText" id="progressText">0/4 completed</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="cardTitle">Recommended Test (Daily Shuffle)</div>
+          <div class="recBox">
+            <div class="recMain" id="recommendedTitle">—</div>
+            <div class="muted" id="recommendedSub">—</div>
+            <div class="row gap mt">
+              <a class="btn" id="recommendedLink" href="#" target="_blank" rel="noopener">Open</a>
+              <button class="btn ghost" id="reshuffleBtn" title="This only changes visually; daily seed stays">Try another</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="cardTitle">Daily 3 Vocab</div>
+          <div id="dailyVocabList" class="list"></div>
+          <div class="muted smallText">Tip: add your own vocab in the Vocab section and it will start showing here too.</div>
+        </div>
+
+        <div class="card">
+          <div class="cardTitle">Daily Grammar Rule</div>
+          <div id="dailyRule" class="ruleBox">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- READING -->
+    <section class="view hidden" id="view-reading">
+      <div class="card">
+        <div class="cardTitle">Reading Tests</div>
+        <div class="muted">These open your existing HTML files from <b>reading-tests/</b>.</div>
+        <div class="linkGrid" id="readingLinks"></div>
+      </div>
+    </section>
+
+    <!-- LISTENING -->
+    <section class="view hidden" id="view-listening">
+      <div class="card">
+        <div class="cardTitle">Listening Tests</div>
+        <div class="muted">These open your existing HTML files from <b>listening-tests/</b>. MP3s are in <b>listening/</b>.</div>
+        <div class="linkGrid" id="listeningLinks"></div>
+      </div>
+    </section>
+
+    <!-- VOCAB -->
+    <section class="view hidden" id="view-vocab">
+      <div class="card">
+        <div class="cardTitle">Vocab Manager</div>
+        <div class="row gap wrap">
+          <input id="vocabSearch" class="input grow" type="search" placeholder="Search vocab or irregular verbs..." />
+          <label class="check compact">
+            <input type="checkbox" id="onlyFavorites" />
+            <span>Favorites only</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="cardTitle">Vocabulary</div>
+         
+          <div id="vocabList" class="table"></div>
+        </div>
+
+        <div class="card">
+          <div class="cardTitle">Irregular Verbs</div>
+
+          <div id="irregularList" class="table"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GRAMMAR -->
+    <section class="view hidden" id="view-grammar">
+      <div class="grid2">
+        <div class="card">
+          <div class="cardTitle">Grammar Rules</div>
+          <div id="grammarRules" class="rules"></div>
+        </div>
+
+        <div class="card">
+          <div class="cardTitle">Daily Grammar (5 Questions)</div>
+          <div class="muted smallText mb">These refresh daily automatically.</div>
+          <form id="dailyGrammarForm" class="quiz"></form>
+          <div class="row gap mt">
+            <button class="btn" id="gradeQuizBtn" type="button">Check answers</button>
+            <button class="btn ghost" id="resetQuizBtn" type="button">Reset</button>
+          </div>
+          <div id="quizResult" class="resultBox hidden"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="view hidden" id="view-settings">
+      <div class="card">
+        <div class="cardTitle">Settings</div>
+
+        <div class="settingsGrid">
+          <div class="settingRow">
+            <div>
+              <div class="settingTitle">Language</div>
+              <div class="muted smallText">UI language. (Content stays yours.)</div>
+            </div>
+            <select id="langSelect" class="select">
+              <option value="en">English</option>
+              <option value="ru">Русский</option>
+              <option value="uz">O‘zbek</option>
+            </select>
+          </div>
+
+          <div class="settingRow">
+            <div>
+              <div class="settingTitle">Sound</div>
+              <div class="muted smallText">Enable/disable UI sound (future use).</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="soundToggle">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="settingRow">
+            <div>
+              <div class="settingTitle">Export Data</div>
+              <div class="muted smallText">Download your vocab, settings, profile, progress as JSON.</div>
+            </div>
+            <button class="btn" id="exportBtn">Export</button>
+          </div>
+
+          <div class="settingRow">
+            <div>
+              <div class="settingTitle">Import Data</div>
+              <div class="muted smallText">Import previously exported JSON.</div>
+            </div>
+            <label class="fileBtn">
+              <input id="importFile" type="file" accept="application/json" />
+              Import JSON
+            </label>
+          </div>
+
+          <div class="settingRow dangerZone">
+            <div>
+              <div class="settingTitle">Reset Everything</div>
+              <div class="muted smallText">This clears local data in this browser.</div>
+            </div>
+            <button class="btn danger" id="resetAllBtn">Reset</button>
+          </div>
+        </div>
+
+        <div class="muted smallText mt">
+          Note: this site stores data in your browser (localStorage). No server needed.
+        </div>
+      </div>
+    </section>
+
+    <!-- MODALS -->
+    <div class="modal hidden" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <div class="modalCard">
+        <div class="modalHead">
+          <div class="modalTitle" id="authTitle">Account</div>
+          <button class="iconBtn" id="closeAuthModal" aria-label="Close">✖</button>
+        </div>
+
+        <div class="tabs">
+          <button class="tab active" data-tab="login">Log in</button>
+          <button class="tab" data-tab="signup">Sign up</button>
+        </div>
+
+        <div class="tabBody" id="tab-login">
+          <form id="loginForm" class="form">
+            <input class="input" id="loginUser" placeholder="Username" required />
+            <input class="input" id="loginPass" type="password" placeholder="Password" required />
+            <button class="btn" type="submit">Log in</button>
+          </form>
+        </div>
+
+        <div class="tabBody hidden" id="tab-signup">
+          <form id="signupForm" class="form">
+            <input class="input" id="signupUser" placeholder="Username" required />
+            <input class="input" id="signupPass" type="password" placeholder="Password" required minlength="4"/>
+            <button class="btn" type="submit">Create account</button>
+          </form>
+          <div class="muted smallText">
+            This is local-only. It saves to your browser.
+          </div>
+        </div>
+
+        <div id="authMsg" class="resultBox hidden"></div>
+      </div>
+    </div>
+  </main>
+<div class="settingRow">
+  <div>
+    <div class="settingTitle">Dark mode</div>
+    <div class="muted smallText">Red theme, darker UI</div>
+  </div>
+  <label class="switch">
+    <input type="checkbox" id="darkToggle">
+    <span class="slider"></span>
+  </label>
+</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
