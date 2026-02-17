@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Listening Practice – Sections 1 & 2</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body{
+            font-family:Arial,sans-serif;
+            background:#fff;
+            line-height:1.4;
+            font-size:16px;
+            padding-bottom:90px;
+        }
+        header{
+            background:#d14242;
+            color:#fff;
+            padding:12px 20px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            box-shadow:0 2px 5px rgba(0,0,0,.1);
+            z-index:100;
+        }
+        .logo-area{display:flex;align-items:center;gap:15px;}
+        .social-link{
+            display:flex;align-items:center;gap:8px;color:#fff;
+            padding:8px 15px;border-radius:50px;text-decoration:none;
+            font-weight:600;font-size:14px;
+            transition:background .3s,transform .2s;
+        }
+        .social-link:hover{transform:translateY(-1px);}
+        .social-link i{font-size:1.2em;}
+        .social-link.telegram{background:#c21e1e;}
+
+        .main-container{margin-top:60px;padding:20px;padding-bottom:100px;}
+        .hidden{display:none;}
+        .question-part{margin-bottom:40px;}
+        .part-header{
+            background:#f1f2ec;padding:15px;border-radius:5px;
+            margin-bottom:20px;border:1px solid #e0e0e0;
+        }
+        .part-header p{margin:0;}
+        .question{margin-bottom:30px;}
+        .question-prompt{
+            margin-bottom:20px;padding:15px;background:#f8f9fa;
+            border-radius:5px;
+        }
+        .answer-input{
+            border:1px solid #888;border-radius:4px;background:#fff;
+            padding:4px 8px;font-size:16px;text-align:center;
+            margin:0 5px;width:140px;max-width:160px;min-width:120px;
+        }
+        .answer-input.correct{border-color:#28a745;background:#e9f7ef;}
+        .answer-input.incorrect{border-color:#dc3545;background:#f8d7da;color:#721c24;}
+
+        .single-choice-container{margin:10px 0;display:flex;flex-direction:column;gap:18px;}
+        .single-choice{padding:10px;border-left:3px solid #4a90e2;background:#f8f9fa;}
+        .single-choice label{
+            display:block;margin-left:20px;margin-top:4px;
+            font-size:16px;cursor:pointer;
+        }
+        .single-choice label.correct{color:#155724;font-weight:bold;}
+        .single-choice label.incorrect{color:#721c24;text-decoration:line-through;}
+
+        .matching-options{
+            display:flex;flex-wrap:wrap;gap:10px;margin:15px 0;
+            padding:15px;background:#f8f9fa;border-radius:5px;
+        }
+        .matching-option{
+            background:#fff;border:1px solid #ddd;padding:8px 12px;
+            border-radius:4px;font-size:14px;
+            font-weight:600;
+            background:#fff9c4;
+        }
+        .matching-answer{
+            margin:8px 0;padding:8px;border-bottom:1px solid #eee;
+            display:flex;align-items:center;gap:10px;
+        }
+
+        select.answer-select{
+            border:1px solid #888;border-radius:4px;background:#fff;
+            padding:6px 10px;font-size:16px;width:120px;text-align:center;
+        }
+        select.answer-select.correct{border-color:#28a745;background:#e9f7ef;}
+        select.answer-select.incorrect{border-color:#dc3545;background:#f8d7da;color:#721c24;}
+
+        .nav-arrows{
+            position:fixed;bottom:100px;right:20px;display:flex;gap:5px;z-index:101;
+        }
+        .nav-arrow{
+            width:50px;height:50px;background:#333;color:#fff;
+            border:none;cursor:pointer;display:flex;align-items:center;
+            justify-content:center;font-size:22px;font-weight:bold;
+        }
+        .nav-row{
+            position:fixed;bottom:0;left:0;right:0;background:#fff;
+            padding:0;display:flex;align-items:center;height:80px;
+            z-index:100;overflow-x:auto;white-space:nowrap;
+            box-shadow:0 -2px 10px rgba(0,0,0,.1);
+        }
+        .footer__questionWrapper___1tZ46{
+            display:flex;align-items:center;margin-right:20px;flex-shrink:0;
+        }
+        .footer__questionNo___3WNct{
+            background:none;border:none;padding:10px 15px;
+            font-size:16px;font-weight:600;color:#333;cursor:pointer;
+            display:flex;align-items:center;gap:5px;
+        }
+        .footer__subquestionWrapper___9GgoP{display:none;gap:2px;margin-left:10px;}
+        .footer__questionWrapper___1tZ46.selected .footer__subquestionWrapper___9GgoP{display:flex;}
+        .subQuestion{
+            width:32px;height:32px;border:1px solid #ccc;background:#fff;
+            color:#333;font-size:14px;font-weight:500;cursor:pointer;
+            display:flex;align-items:center;justify-content:center;border-radius:2px;
+        }
+        .subQuestion.correct{background:#28a745;color:#fff;}
+        .subQuestion.incorrect{background:#dc3545;color:#fff;}
+        .subQuestion.active{background:#4a90e2;color:#fff;}
+
+        .footer__deliverButton___3FM07{
+            margin-left:auto;margin-right:20px;background:#f0f0f0;
+            color:#333;border:1px solid #ccc;padding:12px 20px;
+            border-radius:4px;font-size:16px;font-weight:600;cursor:pointer;
+            display:flex;align-items:center;gap:8px;
+        }
+        .result-button{background:#28a745!important;color:#fff!important;border:none!important;}
+
+        .modal-overlay{
+            position:fixed;top:0;left:0;width:100%;height:100%;
+            background:rgba(0,0,0,.6);z-index:2000;display:flex;
+            justify-content:center;align-items:center;padding:20px;
+        }
+        .modal-content{
+            background:#fff;padding:25px;border-radius:8px;
+            width:100%;max-width:800px;max-height:90vh;overflow-y:auto;
+        }
+        .modal-header{
+            display:flex;justify-content:space-between;align-items:center;
+            border-bottom:1px solid #ddd;padding-bottom:15 trabalhador;margin-bottom:20px;
+        }
+        #result-details table{width:100%;border-collapse:collapse;margin-top:20px;}
+        #result-details th,#result-details td{border:1px solid #ddd;padding:10px;text-align:left;}
+        .result-correct{color:#28a745;font-weight:bold;}
+        .result-incorrect{color:#dc3545;font-weight:bold;}
+
+        @media (max-width:768px){
+            .main-container{padding:10px;}
+            .answer-input,select.answer-select{width:100px;min-width:80px;}
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-area">
+                <i class="fab fa-telegram-plane"></i> <span>EngTest/span>
+            </a>
+        </div>
+    </header>
+<!-- AUDIO (Test 1) -->
+<div style="background:#f1f2ec;padding:15px;border-radius:6px;margin-bottom:20px;border:1px solid #e0e0e0;">
+  <h3 style="margin:0 0 10px;">🎧 Audio — Test 2</h3>
+
+  <audio id="audioPlayer" controls style="width:100%;"></audio>
+
+  <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+    <button type="button" onclick="playPart(1)" style="padding:10px 14px; border:none; border-radius:8px; cursor:pointer;">
+      ▶ Section 1 (Part 1)
+    </button>
+    <button type="button" onclick="playPart(2)" style="padding:10px 14px; border:none; border-radius:8px; cursor:pointer;">
+      ▶ Section 2 (Part 2)
+    </button>
+  </div>
+
+  <div style="margin-top:8px; font-size:13px; opacity:.8;">
+    Tip: If audio doesn’t play, check file names in the <b>listening/</b> folder.
+  </div>
+</div>
+
+    <div class="main-container">
+        <!-- Part 1 -->
+        <div id="part-1" class="question-part">
+            <div class="part-header">
+                <p><strong>SECTION 1</strong></p>
+                <p>Questions 1–10</p>
+            </div>
+            <div class="question">
+                <div class="question-prompt">
+                    <p>Complete the form below.</p>
+                    <p>Write <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> for each answer.</p>
+                </div>
+                <div style="padding:20px;border:1px solid #000;">
+                    <h3 style="text-align:center;margin-bottom:20px;">International Student Travel Agency<br>Enquiry Form</h3>
+                    <p><strong>Name:</strong> Sarah Brown</p>
+                    <p><strong>Date of birth:</strong> <input type="text" id="q1" class="answer-input" placeholder="1"></p>
+                    <p><strong>Address:</strong> 21 Waverley Road, Radstone, RD4 6WV</p>
+                    <p><strong>Contact tel. no.:</strong> <input type="text" id="q2" class="answer-input" placeholder="2"></p>
+                    <br>
+                    <p><strong>Notes:</strong></p>
+                    <ul style="list-style:disc;padding-left:20px;">
+                        <li>wants to travel in <input type="text" id="q3" class="answer-input" placeholder="3" style="width:120px;"> Europe</li>
+                        <li>hopes to travel by <input type="text" id="q4" class="answer-input" placeholder="4" style="width:120px;"></li>
+                        <li>interested in working in a <input type="text" id="q5" class="answer-input" placeholder="5" style="width:120px;"></li>
+                        <li>recommended to consider an alternative e.g. <input type="text" id="q6" class="answer-input" placeholder="6" style="width:120px;"> work</li>
+                        <li>advised to buy a European <input type="text" id="q7" class="answer-input" placeholder="7" style="width:120px;"> for travelling</li>
+                        <li>given a <input type="text" id="q8" class="answer-input" placeholder="8" style="width:120px;"> with accommodation details</li>
+                        <li>agreed to take out <input type="text" id="q9" class="answer-input" placeholder="9" style="width:120px;"> from the Agency</li>
+                        <li>told to use an <input type="text" id="q10" class="answer-input" placeholder="10" style="width:120px;"> for contacting people</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Part 2 -->
+        <div id="part-2" class="question-part hidden">
+            <div class="part-header">
+                <p><strong>SECTION 2</strong></p>
+                <p>Questions 11–20</p>
+            </div>
+
+            <!-- Q11–14 (radio) -->
+            <div class="question">
+                <div class="question-prompt">
+                    <p><strong>Questions 11–14</strong></p>
+                    <p>Choose the correct letter, <strong>A</strong>, <strong>B</strong> or <strong>C</strong>.</p>
+                    <h4>Afternoon tea</h4>
+                </div>
+                <div class="single-choice-container">
+                    <div class="single-choice">
+                        <p><strong>11</strong> According to Claire, what makes the Emperor Hotel attractive to people?</p>
+                        <label><input type="radio" name="q11" value="A"> A the chance to see famous people</label>
+                        <label><input type="radio" name="q11" value="B"> B the friendliness of the staff</label>
+                        <label><input type="radio" name="q11" value="C"> C the luxury of the surroundings</label>
+                    </div>
+                    <div class="single-choice">
+                        <p><strong>12</strong> The Emperor blend of tea is</p>
+                        <label><input type="radio" name="q12" value="A"> A known internationally.</label>
+                        <label><input type="radio" name="q12" value="B"> B made for the hotel</label>
+                        <label><input type="radio" name="q12" value="C"> C sold in only a few places</label>
+                    </div>
+                    <div class="single-choice">
+                        <p><strong>13</strong> Why are the tea tables special?</p>
+                        <label><input type="radio" name="q13" value="A"> A They are covered with unusual cloths.</label>
+                        <label><input type="radio" name="q13" value="B"> B They exactly match the chairs</label>
+                        <label><input type="radio" name="q13" value="C"> C They are made from re‑used flooring.</label>
+                    </div>
+                    <div class="single-choice">
+                        <p><strong>14</strong> The cups and saucers that are used at the hotel</p>
+                        <label><input type="radio" name="q14" value="A"> A are from England.</label>
+                        <label><input type="radio" name="q14" value="B"> B can be bought by customers</label>
+                        <label><input type="radio" name="q14" value="C"> C have pictures of a king and queen</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q15–20 (dropdown) -->
+            <div class="question">
+                <div class="question-prompt">
+                    <p><strong>Questions 15–20</strong></p>
+                    <p>What is the highlight of each of the following tea parties?</p>
+                    <p>Choose <strong>SIX</strong> answers from the box and write the correct letter, <strong>A–H</strong>, next to questions 15–20.</p>
+                </div>
+
+                <div class="matching-options">
+                    <div class="matching-option"><strong>A</strong> enjoying local fruit</div>
+                    <div class="matching-option"><strong>B</strong> sampling warm foods</div>
+                    <div class="matching-option"><strong>C</strong> feeling like royalty</div>
+                    <div class="matching-option"><strong>D</strong> being in a garden</div>
+                    <div class="matching-option"><strong>E</strong> listening to music</div>
+                    <div class="matching-option"><strong>F</strong> finding out about previous guests</div>
+                    <div class="matching-option"><strong>G</strong> having a special cake</div>
+                    <div class="matching-option"><strong>H</strong> capturing happy memories</div>
+                </div>
+
+                <div style="padding:20px;">
+                    <p style="margin:8px 0;"><strong>Tea Parties</strong></p>
+                    <div class="matching-answer"><strong>15</strong> Playtime Tea 
+                        <select id="q15" class="answer-select">
+                            <option value="" disabled selected>Select</option>
+                            <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                            <option value="D">D</option><option value="E">E</option><option value="F">F</option>
+                            <option value="G">G</option><option value="H">H</option>
+                        </select>
+                    </div>
+                    <div class="matching-answer"><strong>16</strong> Bridal Tea 
+                        <select id="q16" class="answer-select">
+                            <option value="" disabled selected>Select</option>
+                            <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                            <option value="D">D</option><option value="E">E</option><option value="F">F</option>
+                            <option value="G">G</option><option value="H">H</option>
+                        </select>
+                    </div>
+                    <div class="matching-answer"><strong>17</strong> Summer Tea 
+                        <select id="q17" class="answer-select">
+                            <option value="" disabled selected>Select</option>
+                            <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                            <option value="D">D</option><option value="E">E</option><option value="F">F</option>
+                            <option value="G">G</option><option value="H">H</option>
+                        </select>
+                    </div>
+                    <div class="matching-answer"><strong>18</strong> Canadian Tea 
+                        <select id="q18" class="answer-select">
+                            <option value="" disabled selected>Select</option>
+                            <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                            <option value="D">D</option><option value="E">E</option><option value="F">F</option>
+                            <option value="G">G</option><option value="H">H</option>
+                        </select>
+                    </div>
+                    <div class="matching-answer"><strong>19</strong> Farmers’ Tea 
+                        <select id="q19" class="answer-select">
+                            <option value="" disabled selected>Select</option>
+                            <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                            <option value="D">D</option><option value="E">E</option><option value="F">F</option>
+                            <option value="G">G</option><option value="H">H</option>
+                        </select>
+                    </div>
+                    <div class="matching-answer"><strong>20</strong> Seniors’ Tea 
+                        <select id="q20" class="answer-select">
+                            <option value="" disabled selected>Select</option>
+                            <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                            <option value="D">D</option><option value="E">E</option><option value="F">F</option>
+                            <option value="G">G</option><option value="H">H</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-arrows">
+        <button class="nav-arrow" onclick="previousPart()" id="prevBtn">‹</button>
+        <button class="nav-arrow" onclick="nextPart()" id="nextBtn">›</button>
+    </div>
+
+    <nav class="nav-row">
+        <div class="footer__questionWrapper___1tZ46 selected">
+            <button class="footer__questionNo___3WNct" onclick="switchToPart(1)">Part 1</button>
+            <div class="footer__subquestionWrapper___9GgoP">
+                <button class="subQuestion" onclick="goToQuestion(1)">1</button>
+                <button class="subQuestion" onclick="goToQuestion(2)">2</button>
+                <button class="subQuestion" onclick="goToQuestion(3)">3</button>
+                <button class="subQuestion" onclick="goToQuestion(4)">4</button>
+                <button class="subQuestion" onclick="goToQuestion(5)">5</button>
+                <button class="subQuestion" onclick="goToQuestion(6)">6</button>
+                <button class="subQuestion" onclick="goToQuestion(7)">7</button>
+                <button class="subQuestion" onclick="goToQuestion(8)">8</button>
+                <button class="subQuestion" onclick="goToQuestion(9)">9</button>
+                <button class="subQuestion" onclick="goToQuestion(10)">10</button>
+            </div>
+        </div>
+        <div class="footer__questionWrapper___1tZ46">
+            <button class="footer__questionNo___3WNct" onclick="switchToPart(2)">Part 2</button>
+            <div class="footer__subquestionWrapper___9GgoP">
+                <button class="subQuestion" onclick="goToQuestion(11)">11</button>
+                <button class="subQuestion" onclick="goToQuestion(12)">12</button>
+                <button class="subQuestion" onclick="goToQuestion(13)">13</button>
+                <button class="subQuestion" onclick="goToQuestion(14)">14</button>
+                <button class="subQuestion" onclick="goToQuestion(15)">15</button>
+                <button class="subQuestion" onclick="goToQuestion(16)">16</button>
+                <button class="subQuestion" onclick="goToQuestion(17)">17</button>
+                <button class="subQuestion" onclick="goToQuestion(18)">18</button>
+                <button class="subQuestion" onclick="goToQuestion(19)">19</button>
+                <button class="subQuestion" onclick="goToQuestion(20)">20</button>
+            </div>
+        </div>
+        <button id="deliver-button" class="footer__deliverButton___3FM07"><span>Check Answers</span></button>
+    </nav>
+
+    <div id="result-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Your Results (Sections 1 & 2)</h2>
+                <button id="modal-close-button">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="score-summary"></p>
+                <div id="result-details"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPart = 1;
+        const totalQuestions = 20;
+        const correctAnswers = {
+            'q1':'30th March 1988','q2':'0903775115','q3':'Northern','q4':'Train','q5':'Hotel',
+            'q6':'Farm','q7':'Pass','q8':'Booklet','q9':'Insurance','q10':'Internet cafe',
+            'q11':'C','q12':'B','q13':'C','q14':'B',
+            'q15':'C','q16':'H','q17':'D','q18':'A','q19':'B','q20':'F'
+        };
+
+        function switchToPart(p){
+            currentPart = p;
+            document.querySelectorAll('.question-part').forEach(el=>el.classList.add('hidden'));
+            document.getElementById(`part-${p}`).classList.remove('hidden');
+            document.querySelectorAll('.footer__questionWrapper___1tZ46').forEach(el=>el.classList.remove('selected'));
+            document.querySelectorAll('.footer__questionWrapper___1tZ46')[p-1].classList.add('selected');
+            updateNavigation();
+        }
+        function goToQuestion(q){
+            const part = Math.ceil(q/10);
+            if(currentPart!==part) switchToPart(part);
+            document.querySelectorAll('.subQuestion').forEach(b=>b.classList.remove('active'));
+            const btn = document.querySelector(`.subQuestion[onclick="goToQuestion(${q})"]`);
+            if(btn) btn.classList.add('active');
+            const el = document.getElementById(`q${q}`) || document.querySelector(`input[name="q${q}"]:checked`)?.closest('label');
+            if(el) el.scrollIntoView({behavior:'smooth',block:'center'});
+        }
+        function previousPart(){ if(currentPart>1) switchToPart(currentPart-1); }
+        function nextPart(){ if(currentPart<2) switchToPart(currentPart+1); }
+        function updateNavigation(){
+            document.getElementById('prevBtn').disabled = currentPart===1;
+            document.getElementById('nextBtn').disabled = currentPart===2;
+        }
+
+        function checkAnswers(){
+            let score = 0;
+            const results = [];
+
+            // Clear all previous feedback
+            document.querySelectorAll('.correct,.incorrect').forEach(el=>el.classList.remove('correct','incorrect'));
+
+            for(let q=1;q<=totalQuestions;q++){
+                const key = `q${q}`;
+                const correct = correctAnswers[key];
+                let user = '', correctFlag = false;
+
+                if(q<=10){
+                    const inp = document.getElementById(key);
+                    if(inp){
+                        user = inp.value.trim();
+                        correctFlag = user.toLowerCase()===correct.toLowerCase();
+                        inp.classList.add(correctFlag?'correct':'incorrect');
+                    }
+                }else if(q>=11 && q<=14){
+                    const rad = document.querySelector(`input[name="${key}"]:checked`);
+                    user = rad?rad.value:'';
+                    correctFlag = user===correct;
+                    if(rad) rad.closest('label').classList.add(correctFlag?'correct':'incorrect');
+                    // REMOVED: Do NOT highlight correct answer for Q11–14
+                }else{
+                    const sel = document.getElementById(key);
+                    if(sel){
+                        user = sel.value;
+                        correctFlag = user===correct;
+                        sel.classList.add(correctFlag?'correct':'incorrect');
+                    }
+                }
+
+                if(correctFlag) score++;
+                const btn = document.querySelector(`.subQuestion[onclick="goToQuestion(${q})"]`);
+                if(btn){
+                    btn.classList.toggle('correct',correctFlag);
+                    if(!correctFlag) btn.classList.add('incorrect');
+                }
+
+                results.push({question:q, userAnswer:user||'—', correctAnswer:correct, isCorrect:correctFlag});
+            }
+            showResults(score,results);
+        }
+
+        function showResults(score,data){
+            const modal = document.getElementById('result-modal');
+            document.getElementById('score-summary').textContent = `You scored ${score} out of ${totalQuestions}.`;
+            let tbl = '<table><tr><th>Q</th><th>Your Answer</th><th>Correct</th><th>Result</th></tr>';
+            data.forEach(r=>{
+                tbl += `<tr><td>${r.question}</td><td>${r.userAnswer}</td><td>${r.correctAnswer}</td>
+                        <td class="${r.isCorrect?'result-correct':'result-incorrect'}">
+                        ${r.isCorrect?'Correct':'Incorrect'}</td></tr>`;
+            });
+            tbl += '</table>';
+            document.getElementById('result-details').innerHTML = tbl;
+            modal.style.display = 'flex';
+            const btn = document.getElementById('deliver-button');
+            btn.classList.add('result-button');
+            btn.innerHTML = '<span>My Result</span>';
+        }
+// ===== AUDIO for this test page =====
+function playPart(n){
+  const audio = document.getElementById("audioPlayer");
+  audio.src = `../listening/test2_p${n}.mp3`;
+  audio.play();
+}
+
+        document.getElementById('deliver-button').addEventListener('click',checkAnswers);
+        document.getElementById('modal-close-button').addEventListener('click',()=>{document.getElementById('result-modal').style.display='none';});
+
+        switchToPart(1);
+        updateNavigation();
+    </script>
+</body>
+</html>

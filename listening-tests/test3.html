@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Listening Practice – Sections 1 & 2</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body{
+            font-family:Arial,sans-serif;
+            background:#fff;
+            line-height:1.4;
+            font-size:16px;
+            padding-bottom:90px;
+        }
+        header{
+            background:#b50000;
+            color:#fff;
+            padding:12px 20px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            box-shadow:0 2px 5px rgba(0,0,0,.1);
+            z-index:100;
+        }
+        .logo-area{display:flex;align-items:center;gap:15px;}
+        .social-link{
+            display:flex;align-items:center;gap:8px;color:#fff;
+            padding:8px 15px;border-radius:50px;text-decoration:none;
+            font-weight:600;font-size:14px;
+            transition:background .3s,transform .2s;
+        }
+        .social-link:hover{transform:translateY(-1px);}
+        .social-link i{font-size:1.2em;}
+        .social-link.telegram{background:#b50000;}
+
+        .main-container{margin-top:60px;padding:20px;padding-bottom:100px;}
+        .hidden{display:none;}
+        .question-part{margin-bottom:40px;}
+        .part-header{
+            background:#f1f2ec;padding:15px;border-radius:5px;
+            margin-bottom:20px;border:1px solid #e0e0e0;
+        }
+        .part-header p{margin:0;}
+        .question{margin-bottom:30px;}
+        .question-prompt{
+            margin-bottom:20px;padding:15px;background:#f8f9fa;
+            border-radius:5px;
+        }
+        .answer-input{
+            border:1px solid #888;border-radius:4px;background:#fff;
+            padding:4px 8px;font-size:16px;text-align:center;
+            margin:0 5px;width:140px;max-width:160px;min-width:120px;
+        }
+        .answer-input.correct{border-color:#28a745;background:#e9f7ef;}
+        .answer-input.incorrect{border-color:#dc3545;background:#f8d7da;color:#721c24;}
+
+        .single-choice-container{margin:10px 0;display:flex;flex-direction:column;gap:18px;}
+        .single-choice{padding:10px;border-left:3px solid #e24a4a;background:#f8f9fa;}
+        .single-choice label{
+            display:block;margin-left:20px;margin-top:4px;
+            font-size:16px;cursor:pointer;
+        }
+        .single-choice label.correct{color:#155724;font-weight:bold;}
+        .single-choice label.incorrect{color:#721c24;text-decoration:line-through;}
+
+        .matching-options{
+            display:flex;flex-wrap:wrap;gap:10px;margin:15px 0;
+            padding:15px;background:#f8f9fa;border-radius:5px;
+        }
+        .matching-option{
+            background:#fff;border:1px solid #ddd;padding:8px 12px;
+            border-radius:4px;font-size:14px;
+            font-weight:600;
+            background:#fff9c4;
+        }
+        .matching-answer{
+            margin:8px 0;padding:8px;border-bottom:1px solid #eee;
+            display:flex;align-items:center;gap:10px;
+        }
+
+        select.answer-select{
+            border:1px solid #888;border-radius:4px;background:#fff;
+            padding:6px 10px;font-size:16px;width:120px;text-align:center;
+        }
+        select.answer-select.correct{border-color:#28a745;background:#e9f7ef;}
+        select.answer-select.incorrect{border-color:#dc3545;background:#f8d7da;color:#721c24;}
+
+        .nav-arrows{
+            position:fixed;bottom:100px;right:20px;display:flex;gap:5px;z-index:101;
+        }
+        .nav-arrow{
+            width:50px;height:50px;background:#333;color:#fff;
+            border:none;cursor:pointer;display:flex;align-items:center;
+            justify-content:center;font-size:22px;font-weight:bold;
+        }
+        .nav-row{
+            position:fixed;bottom:0;left:0;right:0;background:#fff;
+            padding:0;display:flex;align-items:center;height:80px;
+            z-index:100;overflow-x:auto;white-space:nowrap;
+            box-shadow:0 -2px 10px rgba(0,0,0,.1);
+        }
+        .footer__questionWrapper___1tZ46{
+            display:flex;align-items:center;margin-right:20px;flex-shrink:0;
+        }
+        .footer__questionNo___3WNct{
+            background:none;border:none;padding:10px 15px;
+            font-size:16px;font-weight:600;color:#333;cursor:pointer;
+            display:flex;align-items:center;gap:5px;
+        }
+        .footer__subquestionWrapper___9GgoP{display:none;gap:2px;margin-left:10px;}
+        .footer__questionWrapper___1tZ46.selected .footer__subquestionWrapper___9GgoP{display:flex;}
+        .subQuestion{
+            width:32px;height:32px;border:1px solid #ccc;background:#fff;
+            color:#333;font-size:14px;font-weight:500;cursor:pointer;
+            display:flex;align-items:center;justify-content:center;border-radius:2px;
+        }
+        .subQuestion.correct{background:#28a745;color:#fff;}
+        .subQuestion.incorrect{background:#dc3545;color:#fff;}
+        .subQuestion.active{background:#e24f4a;color:#fff;}
+
+        .footer__deliverButton___3FM07{
+            margin-left:auto;margin-right:20px;background:#f0f0f0;
+            color:#333;border:1px solid #ccc;padding:12px 20px;
+            border-radius:4px;font-size:16px;font-weight:600;cursor:pointer;
+            display:flex;align-items:center;gap:8px;
+        }
+        .result-button{background:#28a745!important;color:#fff!important;border:none!important;}
+
+        .modal-overlay{
+            position:fixed;top:0;left:0;width:100%;height:100%;
+            background:rgba(0,0,0,.6);z-index:2000;display:flex;
+            justify-content:center;align-items:center;padding:20px;
+        }
+        .modal-content{
+            background:#fff;padding:25px;border-radius:8px;
+            width:100%;max-width:800px;max-height:90vh;overflow-y:auto;
+        }
+        .modal-header{
+            display:flex;justify-content:space-between;align-items:center;
+            border-bottom:1px solid #ddd;padding-bottom:15px;margin-bottom:20px;
+        }
+        #result-details table{width:100%;border-collapse:collapse;margin-top:20px;}
+        #result-details th,#result-details td{border:1px solid #ddd;padding:10px;text-align:left;}
+        .result-correct{color:#28a745;font-weight:bold;}
+        .result-incorrect{color:#dc3545;font-weight:bold;}
+
+        @media (max-width:768px){
+            .main-container{padding:10px;}
+            .answer-input,select.answer-select{width:100px;min-width:80px;}
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-area">
+            <a href="https://t.me/IELTS_CDEXAM" class="social-link telegram" target="_blank">
+                <i class="fab fa-telegram-plane"></i> <span>IELTS_CDEXAM</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Part 1 -->
+        <div id="part-1" class="question-part">
+            <div class="part-header">
+                <p><strong>SECTION 1</strong></p>
+                <p>Questions 1–10</p>
+            </div>
+            <div class="question">
+                <div class="question-prompt">
+                    <p>Complete the form below.</p>
+                    <p>Write <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> for each answer.</p>
+                </div>
+                <div style="padding:20px;border:1px solid #000;">
+                    <h3 style="text-align:center;margin-bottom:20px;">The London Relocation Services<br>Customer Enquiry Form</h3>
+                    <p><strong>Customer's name:</strong> Anna Woods</p>
+                    <p><strong>Current address:</strong> 118 <input type="text" id="q1" class="answer-input" placeholder="1"> Park, Ballysillan</p>
+                    <p><strong>Postcode:</strong> BT149BJ</p>
+                    <p><strong>Phone No.:</strong> <input type="text" id="q2" class="answer-input" placeholder="2"> (Mobile)</p>
+                    <br>
+                    <p><strong>Other information:</strong></p>
+                    <ul style="list-style:disc;padding-left:20px;">
+                        <li>Anna is hoping to find work as a <input type="text" id="q3" class="answer-input" placeholder="3" style="width:180px;"></li>
+                        <li>She needs to find a <input type="text" id="q4" class="answer-input" placeholder="4" style="width:180px;"> school for her son.</li>
+                    </ul>
+                    <p><strong>Requirements for the new property</strong></p>
+                    <p><strong>Location:</strong></p>
+                    <ul style="list-style:disc;padding-left:20px;">
+                        <li>Her preferred location is in the <input type="text" id="q5" class="answer-input" placeholder="5" style="width:180px;"> of the city.</li>
+                        <li>Her husband would like to be near a <input type="text" id="q6" class="answer-input" placeholder="6" style="width:180px;"></li>
+                        <li>Her son would prefer to be close to a <input type="text" id="q7" class="answer-input" placeholder="7" style="width:180px;"></li>
+                    </ul>
+                    <p><strong>Property details:</strong></p>
+                    <ul style="list-style:disc;padding-left:20px;">
+                        <li>She would like to live in a <input type="text" id="q8" class="answer-input" placeholder="8" style="width:180px;"></li>
+                        <li>She would prefer <input type="text" id="q9" class="answer-input" placeholder="9" style="width:180px;"> bedrooms</li>
+                        <li>A small <input type="text" id="q10" class="answer-input" placeholder="10" style="width:180px;"> is also desirable</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Part 2 -->
+        <div id="part-2" class="question-part hidden">
+            <div class="part-header">
+                <p><strong>SECTION 2</strong></p>
+                <p>Questions 11–20</p>
+            </div>
+
+            <!-- Q11–14 (radio) -->
+            <div class="question">
+                <div class="question-prompt">
+                    <p><strong>Questions 11–14</strong></p>
+                    <p>Choose the correct letter, <strong>A</strong>, <strong>B</strong> or <strong>C</strong>.</p>
+                    <h4>Canadian Festival Theatre</h4>
+                </div>
+                <div class="single-choice-container">
+                    <div class="single-choice">
+                        <p><strong>11</strong> What special offer is there for regular theatre-goers in this season?</p>
+                        <label><input type="radio" name="q11" value="A"> A They can see a second play at a reduced price.</label>
+                        <label><input type="radio" name="q11" value="B"> B They can buy two tickets and get two free.</label>
+                        <label><input type="radio" name="q11" value="C"> C They can get a discount on Mondays.</label>
+                    </div>
+                    <div class="single-choice">
+                        <p><strong>12</strong> What information is given about the study guides?</p>
+                        <label><input type="radio" name="q12" value="A"> A They are handed out at the theatre.</label>
+                        <label><input type="radio" name="q12" value="B"> B They provide information on the actors.</label>
+                        <label><input type="radio" name="q12" value="C"> C They give ideas for discussion.</label>
+                    </div>
+                    <div class="single-choice">
+                        <p><strong>13</strong> What information is given about the 'Bring a friend' special?</p>
+                        <label><input type="radio" name="q13" value="A"> A It is only for those over 65.</label>
+                        <label><input type="radio" name="q13" value="B"> B It applies to a number of productions.</label>
+                        <label><input type="radio" name="q13" value="C"> C It includes a 5% reduction on gifts.</label>
+                    </div>
+                    <div class="single-choice">
+                        <p><strong>14</strong> What does Michael say about the actor Christopher Plunket?</p>
+                        <label><input type="radio" name="q14" value="A"> A He may retire from acting soon.</label>
+                        <label><input type="radio" name="q14" value="B"> B He writes his own plays.</label>
+                        <label><input type="radio" name="q14" value="C"> C He prefers acting in films to performing live.</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q15–20 (dropdown) -->
+            <div class="question">
+                <div class="question-prompt">
+                    <p><strong>Questions 15–20</strong></p>
+                    <p>What is the main theme of each of the following musicals?</p>
+                    <p>Choose <strong>SIX</strong> answers from the box and write the correct letter, <strong>A–H</strong>, next to questions 15–20.</p>
+                </div>
+
+                <div class="matching-options">
+                    <div class="matching-option"><strong>A</strong> living in a different century</div>
+                    <div class="matching-option"><strong>B</strong> managing to achieve success</div>
+                    <div class="matching-option"><strong>C</strong> ageing slowly</div>
+                    <div class="matching-option"><strong>D</strong> growing up</div>
+                    <div class="matching-option"><strong>E</strong> experiencing disappointment</div>
+                    <div class="matching-option"><strong>F</strong> living in a magical place</div>
+                    <div class="matching-option"><strong>G</strong> overcoming poverty</div>
+                    <div class="matching-option"><strong>H</strong> handling conflict</div>
+                </div>
+
+                <div style="padding:20px;">
+                    <p style="margin:8px 0;"><strong>Musicals</strong></p>
+                    <div class="matching-answer"><strong>15</strong> The Climb 
+                        <select id="q15" class="answer-select">
+                            <option value="" disabled selected>Select</option>
+                            <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                            <option value="D">D</option><option value="E">E</option><option value="F">F</option>
+                            <option value="G">G</option><option value="H">H</option>
+                        </select>
+                    </div>
+                    <div class="matching-answer"><strong>16</strong> The Voyagers 
+                        <select id="q16" class="answer-select">
+                            <option value="" disabled selected>Select</option>
+                            <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                            <option value="D">D</option><option value="E">E</option><option value="F">F</option>
+                            <option value="G">G</option><option value="H">H</option>
+                        </select>
+                    </div>
+                    <div class="matching-answer"><strong>17</strong> Joey Brown 
+                        <select id="q17" class="answer-select">
+                            <option value="" disabled selected>Select</option>
+                            <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                            <option value="D">D</option><option value="E">E</option><option value="F">F</option>
+                            <option value="G">G</option><option value="H">H</option>
+                        </select>
+                    </div>
+                    <div class="matching-answer"><strong>18</strong> Main Street 
+                        <select id="q18" class="answer-select">
+                            <option value="" disabled selected>Select</option>
+                            <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                            <option value="D">D</option><option value="E">E</option><option value="F">F</option>
+                            <option value="G">G</option><option value="H">H</option>
+                        </select>
+                    </div>
+                    <div class="matching-answer"><strong>19</strong> Millie and Mike 
+                        <select id="q19" class="answer-select">
+                            <option value="" disabled selected>Select</option>
+                            <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                            <option value="D">D</option><option value="E">E</option><option value="F">F</option>
+                            <option value="G">G</option><option value="H">H</option>
+                        </select>
+                    </div>
+                    <div class="matching-answer"><strong>20</strong> Windswept 
+                        <select id="q20" class="answer-select">
+                            <option value="" disabled selected>Select</option>
+                            <option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                            <option value="D">D</option><option value="E">E</option><option value="F">F</option>
+                            <option value="G">G</option><option value="H">H</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-arrows">
+        <button class="nav-arrow" onclick="previousPart()" id="prevBtn">‹</button>
+        <button class="nav-arrow" onclick="nextPart()" id="nextBtn">›</button>
+    </div>
+
+    <nav class="nav-row">
+        <div class="footer__questionWrapper___1tZ46 selected">
+            <button class="footer__questionNo___3WNct" onclick="switchToPart(1)">Part 1</button>
+            <div class="footer__subquestionWrapper___9GgoP">
+                <button class="subQuestion" onclick="goToQuestion(1)">1</button>
+                <button class="subQuestion" onclick="goToQuestion(2)">2</button>
+                <button class="subQuestion" onclick="goToQuestion(3)">3</button>
+                <button class="subQuestion" onclick="goToQuestion(4)">4</button>
+                <button class="subQuestion" onclick="goToQuestion(5)">5</button>
+                <button class="subQuestion" onclick="goToQuestion(6)">6</button>
+                <button class="subQuestion" onclick="goToQuestion(7)">7</button>
+                <button class="subQuestion" onclick="goToQuestion(8)">8</button>
+                <button class="subQuestion" onclick="goToQuestion(9)">9</button>
+                <button class="subQuestion" onclick="goToQuestion(10)">10</button>
+            </div>
+        </div>
+        <div class="footer__questionWrapper___1tZ46">
+            <button class="footer__questionNo___3WNct" onclick="switchToPart(2)">Part 2</button>
+            <div class="footer__subquestionWrapper___9GgoP">
+                <button class="subQuestion" onclick="goToQuestion(11)">11</button>
+                <button class="subQuestion" onclick="goToQuestion(12)">12</button>
+                <button class="subQuestion" onclick="goToQuestion(13)">13</button>
+                <button class="subQuestion" onclick="goToQuestion(14)">14</button>
+                <button class="subQuestion" onclick="goToQuestion(15)">15</button>
+                <button class="subQuestion" onclick="goToQuestion(16)">16</button>
+                <button class="subQuestion" onclick="goToQuestion(17)">17</button>
+                <button class="subQuestion" onclick="goToQuestion(18)">18</button>
+                <button class="subQuestion" onclick="goToQuestion(19)">19</button>
+                <button class="subQuestion" onclick="goToQuestion(20)">20</button>
+            </div>
+        </div>
+        <button id="deliver-button" class="footer__deliverButton___3FM07"><span>Check Answers</span></button>
+    </nav>
+
+    <div id="result-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Your Results (Sections 1 & 2)</h2>
+                <button id="modal-close-button">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="score-summary"></p>
+                <div id="result-details"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPart = 1;
+        const totalQuestions = 20;
+
+        const correctAnswers = {
+            'q1': 'Fordyce',
+            'q2': '7840051963',
+            'q3': 'Nurse',
+            'q4': 'Primary',
+            'q5': 'South',
+            'q6': 'Station',
+            'q7': 'Park',
+            'q8': 'House',
+            'q9': 'Three',
+            'q10': 'Office',
+            'q11': 'A',
+            'q12': 'C',
+            'q13': 'B',
+            'q14': 'A',
+            'q15': 'B',
+            'q16': 'A',
+            'q17': 'H',
+            'q18': 'E',
+            'q19': 'D',
+            'q20': 'F'
+        };
+
+        function switchToPart(p){
+            currentPart = p;
+            document.querySelectorAll('.question-part').forEach(el=>el.classList.add('hidden'));
+            document.getElementById(`part-${p}`).classList.remove('hidden');
+            document.querySelectorAll('.footer__questionWrapper___1tZ46').forEach(el=>el.classList.remove('selected'));
+            document.querySelectorAll('.footer__questionWrapper___1tZ46')[p-1].classList.add('selected');
+            updateNavigation();
+        }
+
+        function goToQuestion(q){
+            const part = Math.ceil(q/10);
+            if(currentPart!==part) switchToPart(part);
+            document.querySelectorAll('.subQuestion').forEach(b=>b.classList.remove('active'));
+            const btn = document.querySelector(`.subQuestion[onclick="goToQuestion(${q})"]`);
+            if(btn) btn.classList.add('active');
+            const el = document.getElementById(`q${q}`) || document.querySelector(`input[name="q${q}"]:checked`)?.closest('.single-choice');
+            if(el) el.scrollIntoView({behavior:'smooth',block:'center'});
+        }
+
+        function previousPart(){ if(currentPart>1) switchToPart(currentPart-1); }
+        function nextPart(){ if(currentPart<2) switchToPart(currentPart+1); }
+
+        function updateNavigation(){
+            document.getElementById('prevBtn').disabled = currentPart===1;
+            document.getElementById('nextBtn').disabled = currentPart===2;
+        }
+
+        function checkAnswers(){
+            let score = 0;
+            const results = [];
+
+            // Clear previous feedback
+            document.querySelectorAll('.correct,.incorrect').forEach(el=>el.classList.remove('correct','incorrect'));
+            document.querySelectorAll('.subQuestion').forEach(b=>b.classList.remove('correct','incorrect'));
+
+            for(let q=1;q<=totalQuestions;q++){
+                const key = `q${q}`;
+                const correct = correctAnswers[key];
+                let user = '', correctFlag = false;
+
+                if(q<=10){
+                    const inp = document.getElementById(key);
+                    if(inp){
+                        user = inp.value.trim();
+                        correctFlag = user.toLowerCase() === correct.toLowerCase();
+                        inp.classList.add(correctFlag ? 'correct' : 'incorrect');
+                    }
+                }else if(q>=11 && q<=14){
+                    const rad = document.querySelector(`input[name="${key}"]:checked`);
+                    user = rad ? rad.value : '';
+                    correctFlag = user === correct;
+                    if(rad){
+                        rad.closest('label').classList.add(correctFlag ? 'correct' : 'incorrect');
+                    }
+                }else{
+                    const sel = document.getElementById(key);
+                    if(sel){
+                        user = sel.value;
+                        correctFlag = user === correct;
+                        sel.classList.add(correctFlag ? 'correct' : 'incorrect');
+                    }
+                }
+
+                if(correctFlag) score++;
+
+                const btn = document.querySelector(`.subQuestion[onclick="goToQuestion(${q})"]`);
+                if(btn){
+                    btn.classList.toggle('correct', correctFlag);
+                    if(!correctFlag) btn.classList.add('incorrect');
+                }
+
+                results.push({
+                    question: q,
+                    userAnswer: user || '—',
+                    correctAnswer: correct,
+                    isCorrect: correctFlag
+                });
+            }
+
+            showResults(score, results);
+        }
+
+        function showResults(score, data){
+            const modal = document.getElementById('result-modal');
+            document.getElementById('score-summary').textContent = `You scored ${score} out of ${totalQuestions}.`;
+
+            let tbl = '<table><tr><th>Q</th><th>Your Answer</th><th>Correct</th><th>Result</th></tr>';
+            data.forEach(r => {
+                tbl += `<tr>
+                    <td>${r.question}</td>
+                    <td>${r.userAnswer}</td>
+                    <td>${r.correctAnswer}</td>
+                    <td class="${r.isCorrect ? 'result-correct' : 'result-incorrect'}">
+                        ${r.isCorrect ? 'Correct' : 'Incorrect'}
+                    </td>
+                </tr>`;
+            });
+            tbl += '</table>';
+            document.getElementById('result-details').innerHTML = tbl;
+
+            modal.style.display = 'flex';
+            const btn = document.getElementById('deliver-button');
+            btn.classList.add('result-button');
+            btn.innerHTML = '<span>My Result</span>';
+        }
+
+        // Event listeners
+        document.getElementById('deliver-button').addEventListener('click', checkAnswers);
+        document.getElementById('modal-close-button').addEventListener('click', () => {
+            document.getElementById('result-modal').style.display = 'none';
+        });
+
+        // Initialise
+        switchToPart(1);
+        updateNavigation();
+    </script>
+</body>
+</html>

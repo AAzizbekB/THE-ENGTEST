@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS_CDEXAM – Katherine Mansfield · Reading Passage 1</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --passage-bg: #f8f9fa;
+            --questions-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --highlight-yellow: #FFEB3B;
+            --highlight-green: #4CAF50;
+            --header-bg: #F8F8F8;
+            --header-text: #333333;
+            --telegram-blue: #0088CC;
+            --button-bg: #CC0000;
+            --button-hover: #A30000;
+            --correct-color: #28a745;
+            --incorrect-color: #dc3545;
+            --progress-complete: #28a745;
+            --progress-incomplete: #bdbdbd;
+            --timer-bg: #ffffff;
+            --timer-text: #CC0000;
+            --timer-border: #ffebee;
+            --footer-bg: #f5f5f5;
+        }
+
+        .night-mode {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --passage-bg: #1e1e1e;
+            --questions-bg: #1e1e1e;
+            --border-color: #424242;
+            --highlight-yellow: #FFA000;
+            --highlight-green: #388E3C;
+            --header-bg: #1a1a1a;
+            --header-text: #ffffff;
+            --button-bg: #990000;
+            --button-hover: #7a0000;
+            --correct-color: #218838;
+            --incorrect-color: #c82333;
+            --progress-complete: #218838;
+            --progress-incomplete: #616161;
+            --timer-bg: #1e1e1e;
+            --timer-text: #ff5252;
+            --timer-border: #424242;
+            --footer-bg: #121212;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:var(--bg-color); color:var(--text-color); height:100vh; display:flex; flex-direction:column; overflow:hidden; }
+        header { background:var(--header-bg); color:var(--header-text); padding:12px 20px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 5px rgba(0,0,0,0.1); z-index:100; }
+        .logo-area a { display:flex; align-items:center; gap:8px; background:var(--telegram-blue); color:white; padding:8px 15px; border-radius:50px; text-decoration:none; font-weight:600; font-size:14px; }
+        .header-controls { display:flex; gap:15px; align-items:center; }
+        .timer-container { background:var(--timer-bg); color:var(--timer-text); border:2px solid var(--timer-border); border-radius:50px; padding:6px 12px; display:flex; align-items:center; gap:12px; font-weight:600; }
+        .timer-display { font-family:'Courier New',monospace; font-weight:bold; font-size:16px; min-width:56px; }
+        .timer-controls button { background:none; border:none; color:var(--timer-text); cursor:pointer; font-size:14px; }
+        .mode-toggle { background:none; border:none; color:var(--header-text); font-size:20px; cursor:pointer; width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:50%; }
+        main { display:flex; flex:1; overflow:hidden; }
+        .passage-container, .questions-container { height:100%; overflow-y:auto; padding:20px; }
+        .passage-container { width:50%; background:var(--passage-bg); border-right:1px solid var(--border-color); }
+        .questions-container { width:50%; background:var(--questions-bg); }
+        .passage-title { font-size:24px; font-weight:700; margin-bottom:20px; padding-bottom:10px; border-bottom:2px solid var(--border-color); }
+        .passage-text p { margin-bottom:20px; text-align:justify; line-height:1.6; }
+        /* increased passage text size */
+        .passage-content p { font-size: 17px; line-height: 1.7; margin-bottom: 1.2rem; }
+        .passage-content { font-size: 17px; }
+        .highlight-yellow { background-color: var(--highlight-yellow); color: #000; cursor: pointer; }
+        .highlight-green { background-color: var(--highlight-green); color: white; cursor: pointer; }
+        .section-title { font-size:18px; font-weight:600; margin:25px 0 15px; padding-bottom:8px; border-bottom:1px solid var(--border-color); }
+        
+        /* Questions 1-6: number inside left border, not floating above */
+        .question { 
+            margin-bottom: 25px; 
+            padding: 15px 15px 15px 20px; 
+            background: var(--passage-bg); 
+            border-left: 4px solid var(--border-color); 
+            border-radius: 8px; 
+            display: flex; 
+            align-items: flex-start; 
+            gap: 12px;
+        }
+        .q-num {
+            font-weight: 800;
+            font-size: 18px;
+            color: var(--button-bg);
+            min-width: 28px;
+        }
+        .question-content {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .instructions, .list-of-people { background:#fff8c5; padding:12px 16px; border-left:4px solid var(--button-bg); border-radius:6px; margin:15px 0; font-weight:700; line-height:1.5; }
+        .night-mode .instructions, .night-mode .list-of-people { background:#5d4c00; color:#fff; }
+        .fill-in-the-blank { width:180px; height:40px; padding:0 15px; font-size:16px; border:2px solid var(--border-color); border-radius:50px; text-align:center; background:transparent; outline:none; color:var(--text-color); }
+        select.select-answer { padding:8px 12px; font-size:16px; border-radius:6px; width:100%; max-width:380px; border:1px solid var(--border-color); background:white; color:var(--text-color); }
+        .night-mode select.select-answer { background:#333; color:#e0e0e0; }
+        footer { background:var(--footer-bg); padding:12px 20px; border-top:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+        
+        .progress-wrapper { 
+            flex:1; 
+            overflow-x:auto; 
+            padding:5px 0; 
+            white-space:nowrap;
+            scrollbar-width: thin;
+        }
+        .progress-container { 
+            display:inline-flex; 
+            gap:8px; 
+        }
+        .progress-item { 
+            width:36px; height:36px; border-radius:50%; background:var(--progress-incomplete); color:white; 
+            display:flex; align-items:center; justify-content:center; font-size:13px; cursor:pointer; flex-shrink:0;
+            font-weight:bold; transition:all 0.2s;
+        }
+        .progress-item:hover { transform:scale(1.15); }
+        .progress-item.completed { background:var(--progress-complete); }
+
+        .action-buttons { display:flex; gap:12px; }
+        .btn-primary { background:var(--button-bg); color:white; padding:10px 20px; border:none; border-radius:4px; cursor:pointer; font-weight:600; }
+        .btn-primary:hover { background:var(--button-hover); }
+        .btn-secondary { background:transparent; border:1px solid var(--button-bg); color:var(--button-bg); padding:10px 20px; border-radius:4px; cursor:pointer; }
+        .btn-secondary:hover { background:rgba(204,0,0,0.1); }
+
+        .feedback-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.75); display:none; justify-content:center; align-items:center; z-index:1000; }
+        .feedback-container { background:var(--passage-bg); width:90%; max-width:900px; height:90%; border-radius:10px; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.3); }
+        .feedback-header { padding:20px; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center; background:var(--header-bg); }
+        .feedback-body { padding:20px; overflow-y:auto; }
+        .feedback-item { margin-bottom:20px; padding:15px; background:var(--questions-bg); border-radius:8px; border:1px solid var(--border-color); }
+        .correct { color:var(--correct-color); }
+        .incorrect { color:var(--incorrect-color); }
+
+        .highlight-toolbar {
+            position: fixed;
+            background: #333;
+            border-radius: 8px;
+            padding: 6px;
+            display: flex;
+            gap: 6px;
+            z-index: 10000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .btn-yellow { background: var(--highlight-yellow); color: #000; padding: 6px 12px; border: none; cursor: pointer; border-radius: 4px; font-weight: 600; }
+        .btn-green { background: var(--highlight-green); color: white; padding: 6px 12px; border: none; cursor: pointer; border-radius: 4px; font-weight: 600; }
+        .btn-remove { background: #f44336; color: white; padding: 6px 12px; border: none; cursor: pointer; border-radius: 4px; font-weight: 600; }
+
+        .word-options-box { display: flex; flex-wrap: wrap; gap: 12px; background: var(--passage-bg); padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+        .summary-question-box { background: var(--passage-bg); padding: 20px; border-radius: 8px; border: 1px dashed var(--border-color); margin-top: 12px; line-height: 2.2; }
+        .answer-placeholder { display: inline-flex; align-items: center; margin: 0 6px; gap: 6px; }
+
+        .blue-box-title { font-weight:700; font-size:18px; margin-bottom:20px; }
+        .blue-box-question { margin:20px 0; display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+        .question-number-label { font-weight:700; color:var(--button-bg); min-width:25px; }
+
+        .options { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .options label { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+
+        @media (max-width: 900px) {
+            main { flex-direction:column; }
+            .passage-container, .questions-container { width:100%; height:50%; border:none; border-bottom:1px solid var(--border-color); }
+            .passage-container { border-bottom:none; }
+        }
+        @media (max-width: 600px) {
+            .progress-item { width:32px; height:32px; font-size:12px; }
+            .timer-controls button { font-size:12px; }
+            .fill-in-the-blank { width:140px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <a href="https://t.me/IELTS_CDEXAM" class="social-link telegram" target="_blank">
+                <i class="fab fa-telegram-plane"></i>
+                <span>IELTS_CDEXAM</span>
+            </a>
+        </div>
+        <div class="header-controls">
+            <div class="timer-container">
+                <i class="fas fa-clock"></i>
+                <span class="timer-display" id="timer">20:00</span>
+                <div class="timer-controls">
+                    <button id="start-timer" title="Start"><i class="fas fa-play"></i></button>
+                    <button id="pause-timer" title="Pause"><i class="fas fa-pause"></i></button>
+                    <button id="reset-timer" title="Reset"><i class="fas fa-redo"></i></button>
+                </div>
+            </div>
+            <button class="mode-toggle" id="night-mode-toggle" title="Toggle Night Mode">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- PASSAGE: slightly bigger text (17px) -->
+        <div class="passage-container" id="passage-container">
+            <div class="passage-content">
+                <div class="passage-title">READING PASSAGE 1</div>
+
+                <p class="instructions">
+                    You should spend about 20 minutes on Questions 1–13, which are based on Reading Passage 1 below.
+                </p>
+
+                <h3>Katherine Mansfield</h3>
+
+                <p><strong>Katherine Mansfield was a modernist writer of short fiction who was born and brought up in New Zealand.</strong></p>
+
+                <p>Katherine Mansfield Beauchamp Murry was born in 1888, into a prominent family in Wellington, New Zealand. She became one of New Zealand’s best-known writers, using the pen name of Katherine Mansfield. The daughter of a banker, and born into a middle-class family, she was also a first cousin of Countess Elizabeth von Arnim, a distinguished novelist in her time. Mansfield had two older sisters and a younger brother. Her father, Harold Beauchamp, went on to become the chairman of the Bank of New Zealand. In 1893, the Mansfield family moved to Karori, a suburb of Wellington, where Mansfield would spend the happiest years of her childhood; she later used her memories of this time as an inspiration for her <em>Prelude</em> story.</p>
+
+                <p>Her first published stories appeared in the <em>High School Reporter</em> and the Wellington Girls’ High School magazine in 1898 and 1899. In 1902, she developed strong feelings for a musician who played the cello, Arnold Trowell, although her feelings were not, for the most part, returned. Mansfield herself was an accomplished cellist, having received lessons from Trowell’s father. Mansfield wrote in her journals of feeling isolated to some extent in New Zealand, and in general terms of her interest in the Maori people (New Zealand’s native people), who were often portrayed in a sympathetic light in her later stories, such as <em>How Pearl Button Was Kidnapped</em>.</p>
+
+                <p>She moved to London in 1903, where she attended Queen’s College, along with her two sisters. Mansfield recommenced playing the cello, an occupation that she believed, during her time at Queen’s, she would take up professionally. She also began contributing to the college newspaper, with such a dedication to it that she eventually became its editor. She was particularly interested in the works of the French writers of this period and in the 19th-century British writer, Oscar Wilde, and she was appreciated amongst fellow students at Queen’s for her lively and charismatic approach to life and work. She met fellow writer Ida Baker, a South African, at the college, and the pair became lifelong friends. Mansfield did not actively support the suffragette movement in the UK. Women in New Zealand had gained the right to vote in 1893.</p>
+
+                <p>Mansfield first began journeying into the other parts of Europe in the period 1903–1906, mainly to Belgium and Germany. After finishing her schooling in England, she returned to her New Zealand home in 1906, only then beginning to write short stories in a serious way. She had several works published in Australia in a magazine called <em>Native Companion</em>, which was her first paid writing work, and by this time she had her mind set on becoming a professional writer. It was also the first occasion on which she used the pseudonym “K. Mansfield”.</p>
+
+                <p>Mansfield rapidly grew discontented with the provincial New Zealand lifestyle, and with her family. Two years later she headed again to London. Her father sent her an annual subsidy of £100 for the rest of her life. In later years, she would express both admiration and disdain for New Zealand in her journals.</p>
+
+                <p>In 1911, Mansfield met John Middleton Murry, the Oxford scholar and editor of the literary magazine <em>Rhythm</em>. They were later to marry in 1918. Mansfield became a co-editor of <em>Rhythm</em>, which was subsequently called <em>The Blue Review</em>, in which more of her works were published. She and Murry lived in various houses in England and briefly in Paris. <em>The Blue Review</em> failed to gain enough readers and was no longer published. Their attempt to set up as writers in Paris was cut short by Murry’s bankruptcy, which resulted from the failure of this and other journals. Life back in England meant frequently changed addresses and very limited funds.</p>
+
+                <p>Between 1915 and 1918, Mansfield moved between England and Bandol, France. She and Murry developed close contact with other well-known writers of the time such as D. H. Lawrence, Bertrand Russell and Aldous Huxley. By October 1918 Mansfield had become seriously ill; she had been diagnosed with tuberculosis and was advised to enter a sanatorium. She could no longer spend winters in London. In the autumn of 1918 she was so ill that she decided to go to Ospedal in Italy. It was the publication of <em>Bliss and Other Stories</em> in 1920 that was to solidify Mansfield’s reputation as a writer.</p>
+
+                <p>Mansfield also spent time in Menton, France, as the tenant of her father’s cousin at “The Villa Isola Bella”. There she wrote eight stories including <em>Miss Brill</em> and <em>The Daughters of the Late Colonel</em>, the latter of which she pronounced to be “...the only story that satisfies me to any extent”.</p>
+
+                <p>Mansfield produced a great deal of work in the final years of her life, and much of her prose and poetry remained unpublished at her death in 1923. After her death, her husband, Murry, took on the task of editing and publishing her works. His efforts resulted in two additional volumes of short stories, <em>The Doves’ Nest</em> and <em>Something Childish</em>, published in 1923 and 1924 respectively, the publication of her <em>Poems</em> as well as a collection of critical writings (<em>Novels and Novelists</em>) and a number of editions of Mansfield’s previously unpublished letters and journals.</p>
+            </div>
+        </div>
+
+        <!-- QUESTIONS -->
+        <div class="questions-container" id="questions-container">
+
+            <!-- Questions 1–6: TRUE / FALSE / NOT GIVEN -->
+            <div class="section-title">Questions 1–6</div>
+            <div class="instructions">
+                <strong>Do the following statements agree with the information given in Reading Passage 1?</strong><br>
+                In boxes 1–6 on your answer sheet, write<br><br>
+                <strong>TRUE</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if the statement agrees with the information<br>
+                <strong>FALSE</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if the statement contradicts the information<br>
+                <strong>NOT GIVEN</strong>&nbsp;if there is no information on this
+            </div>
+
+            <div class="question-group">
+                <!-- question 1: number now inside .q-num -->
+                <div class="question" id="q1">
+                    <span class="q-num">1.</span>
+                    <div class="question-content">
+                        The name Katherine Mansfield, that appears on the writer’s book, was exactly the same as her original name.
+                        <select name="q1" class="select-answer">
+                            <option value="" selected disabled>Select</option>
+                            <option value="TRUE">TRUE</option>
+                            <option value="FALSE">FALSE</option>
+                            <option value="NOT GIVEN">NOT GIVEN</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="question" id="q2">
+                    <span class="q-num">2.</span>
+                    <div class="question-content">
+                        Mansfield won a prize for a story she wrote for the <em>High School Reporter</em>.
+                        <select name="q2" class="select-answer">
+                            <option value="" selected disabled>Select</option>
+                            <option value="TRUE">TRUE</option>
+                            <option value="FALSE">FALSE</option>
+                            <option value="NOT GIVEN">NOT GIVEN</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="question" id="q3">
+                    <span class="q-num">3.</span>
+                    <div class="question-content">
+                        <em>How Pearl Button Was Kidnapped</em> portrayed Maori people in a favorable way.
+                        <select name="q3" class="select-answer">
+                            <option value="" selected disabled>Select</option>
+                            <option value="TRUE">TRUE</option>
+                            <option value="FALSE">FALSE</option>
+                            <option value="NOT GIVEN">NOT GIVEN</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="question" id="q4">
+                    <span class="q-num">4.</span>
+                    <div class="question-content">
+                        When Mansfield was at Queen’s College, she planned to be a professional writer.
+                        <select name="q4" class="select-answer">
+                            <option value="" selected disabled>Select</option>
+                            <option value="TRUE">TRUE</option>
+                            <option value="FALSE">FALSE</option>
+                            <option value="NOT GIVEN">NOT GIVEN</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="question" id="q5">
+                    <span class="q-num">5.</span>
+                    <div class="question-content">
+                        Mansfield was unpopular with the other students at Queen’s College.
+                        <select name="q5" class="select-answer">
+                            <option value="" selected disabled>Select</option>
+                            <option value="TRUE">TRUE</option>
+                            <option value="FALSE">FALSE</option>
+                            <option value="NOT GIVEN">NOT GIVEN</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="question" id="q6">
+                    <span class="q-num">6.</span>
+                    <div class="question-content">
+                        In London, Mansfield showed little interest in politics.
+                        <select name="q6" class="select-answer">
+                            <option value="" selected disabled>Select</option>
+                            <option value="TRUE">TRUE</option>
+                            <option value="FALSE">FALSE</option>
+                            <option value="NOT GIVEN">NOT GIVEN</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questions 7–13: Note completion – NO placeholders -->
+            <div class="section-title">Questions 7–13</div>
+            <div class="instructions">
+                <strong>Complete the notes below.</strong><br>
+                <strong>Choose ONE WORD AND/OR A NUMBER from the passage for each answer.</strong><br>
+                Write your answers in boxes 7–13 on your answer sheet.
+            </div>
+
+            <div class="blue-box">
+                <div class="blue-box-title">Katherine Mansfield’s adult years</div>
+
+                <div class="blue-box-question">
+                    <span class="question-number-label">7</span>
+                    <span class="question-text">
+                        • 
+                        <span class="answer-oval">
+                            <input type="text" name="q7" class="fill-in-the-blank" maxlength="20" placeholder="">
+                        </span>
+                        moved from England back to New Zealand
+                    </span>
+                </div>
+
+                <div class="blue-box-question">
+                    <span class="question-number-label">8</span>
+                    <span class="question-text">
+                        • first paid writing work was in a publication based in 
+                        <span class="answer-oval">
+                            <input type="text" name="q8" class="fill-in-the-blank" maxlength="20" placeholder="">
+                        </span>
+                    </span>
+                </div>
+
+                <div class="blue-box-question">
+                    <span class="question-number-label">9</span>
+                    <span class="question-text">
+                        • her 
+                        <span class="answer-oval">
+                            <input type="text" name="q9" class="fill-in-the-blank" maxlength="20" placeholder="">
+                        </span>
+                        and the New Zealand way of life made her feel dissatisfied
+                    </span>
+                </div>
+
+                <div class="blue-box-question">
+                    <span class="question-text"><strong>1908</strong> – returned to London</span>
+                </div>
+
+                <div class="blue-box-question">
+                    <span class="text"><strong>1911–1919</strong></span>
+                </div>
+
+                <div class="blue-box-question">
+                    <span class="question-number-label">10</span>
+                    <span class="question-text">
+                        • 
+                        <span class="answer-oval">
+                            <input type="text" name="q10" class="fill-in-the-blank" maxlength="20" placeholder="">
+                        </span>
+                        prevented Mansfield and Murry from staying together in Paris
+                    </span>
+                </div>
+
+                <div class="blue-box-question">
+                    <span class="question-number-label">11</span>
+                    <span class="question-text">
+                        • spent time with distinguished 
+                        <span class="answer-oval">
+                            <input type="text" name="q11" class="fill-in-the-blank" maxlength="20" placeholder="">
+                        </span>
+                    </span>
+                </div>
+
+                <div class="blue-box-question">
+                    <span class="question-text">• from 1916, tuberculosis restricted the time she spent in London</span>
+                </div>
+
+                <div class="blue-box-question">
+                    <span class="question-text"><strong>1920</strong></span>
+                </div>
+
+                <div class="blue-box-question">
+                    <span class="question-number-label">12</span>
+                    <span class="question-text">
+                        • her 
+                        <span class="answer-oval">
+                            <input type="text" name="q12" class="fill-in-the-blank" maxlength="20" placeholder="">
+                        </span>
+                        was consolidated when <em>Bliss and Other Stories</em> was published
+                    </span>
+                </div>
+
+                <div class="blue-box-question">
+                    <span class="question-text">• wrote several stories at “Villa Isola Bella”</span>
+                </div>
+
+                <div class="blue-box-question">
+                    <span class="question-text"><strong>1923–1924</strong></span>
+                </div>
+
+                <div class="blue-box-question">
+                    <span class="question-number-label">13</span>
+                    <span class="question-text">
+                        • Mansfield’s 
+                        <span class="answer-oval">
+                            <input type="text" name="q13" class="fill-in-the-blank" maxlength="20" placeholder="">
+                        </span>
+                        published more of her works after her death
+                    </span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="progress-wrapper" id="progress-wrapper">
+            <div class="progress-container" id="progress-container"></div>
+        </div>
+        <div class="action-buttons">
+            <button class="btn-secondary" id="reset-btn">Reset Answers</button>
+            <button class="btn-primary" id="submit-btn">Submit Answers</button>
+        </div>
+    </footer>
+
+    <div class="feedback-overlay" id="feedback-overlay">
+        <div class="feedback-container">
+            <div class="feedback-header">
+                <div class="feedback-title">
+                    <i class="fas fa-chart-bar"></i> Your Results
+                    <span class="score-display" id="score-display">0/13</span>
+                </div>
+                <button id="close-feedback"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="feedback-body" id="feedback-body"></div>
+        </div>
+    </div>
+
+    <script>
+        // Timer
+        let timerInterval, seconds = 1200, timerRunning = false;
+        const timerDisplay = document.getElementById('timer');
+        const startTimer = document.getElementById('start-timer');
+        const pauseTimer = document.getElementById('pause-timer');
+        const resetTimer = document.getElementById('reset-timer');
+
+        function formatTime(s) {
+            const m = String(Math.floor(s / 60)).padStart(2, '0');
+            const sec = String(s % 60).padStart(2, '0');
+            return `${m}:${sec}`;
+        }
+
+        function updateTimer() {
+            timerDisplay.textContent = formatTime(seconds);
+            if (seconds <= 0) {
+                clearInterval(timerInterval);
+                timerRunning = false;
+                document.getElementById('submit-btn').click();
+            }
+        }
+
+        startTimer.addEventListener('click', () => {
+            if (!timerRunning) {
+                timerRunning = true;
+                timerInterval = setInterval(() => { seconds--; updateTimer(); }, 1000);
+            }
+        });
+
+        pauseTimer.addEventListener('click', () => {
+            clearInterval(timerInterval); timerRunning = false;
+        });
+
+        resetTimer.addEventListener('click', () => {
+            clearInterval(timerInterval); timerRunning = false; seconds = 1200; updateTimer();
+        });
+
+        // Night Mode
+        document.getElementById('night-mode-toggle').addEventListener('click', () => {
+            document.body.classList.toggle('night-mode');
+            const icon = document.querySelector('#night-mode-toggle i');
+            icon.classList.toggle('fa-moon'); icon.classList.toggle('fa-sun');
+        });
+
+        // Progress Indicators
+        const progressContainer = document.getElementById('progress-container');
+        for (let i = 1; i <= 13; i++) {
+            const item = document.createElement('div');
+            item.className = 'progress-item';
+            item.textContent = i;
+            item.dataset.question = i;
+            progressContainer.appendChild(item);
+            item.addEventListener('click', () => {
+                const target = document.getElementById(`q${i}`) || document.querySelector(`input[name="q${i}"]`)?.closest('.blue-box-question');
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        // HIGHLIGHT (same for passage and questions)
+        let highlightToolbar = null;
+
+        function createHighlightToolbar(rect) {
+            if (highlightToolbar) highlightToolbar.remove();
+            
+            highlightToolbar = document.createElement('div');
+            highlightToolbar.className = 'highlight-toolbar';
+            highlightToolbar.innerHTML = `
+                <button class="btn-yellow" title="Yellow highlight">🟨 Yellow</button>
+                <button class="btn-green" title="Green highlight">🟩 Green</button>
+                <button class="btn-remove" title="Remove highlight">❌ Remove</button>
+            `;
+            
+            document.body.appendChild(highlightToolbar);
+            
+            const toolbarWidth = highlightToolbar.offsetWidth;
+            let left = rect.left;
+            if (left + toolbarWidth > window.innerWidth) {
+                left = window.innerWidth - toolbarWidth - 10;
+            }
+            highlightToolbar.style.top = `${rect.top - 50}px`;
+            highlightToolbar.style.left = `${left}px`;
+            
+            highlightToolbar.querySelector('.btn-yellow').addEventListener('click', () => applyHighlight('yellow'));
+            highlightToolbar.querySelector('.btn-green').addEventListener('click', () => applyHighlight('green'));
+            highlightToolbar.querySelector('.btn-remove').addEventListener('click', removeHighlight);
+        }
+
+        function applyHighlight(color) {
+            const sel = window.getSelection();
+            if (!sel.isCollapsed && sel.toString().trim()) {
+                const range = sel.getRangeAt(0);
+                const span = document.createElement('span');
+                span.className = color === 'yellow' ? 'highlight-yellow' : 'highlight-green';
+                
+                span.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (confirm('Remove this highlight?')) {
+                        this.outerHTML = this.innerHTML;
+                    }
+                });
+                
+                try {
+                    span.appendChild(range.extractContents());
+                    range.insertNode(span);
+                } catch (e) {
+                    console.warn('Highlight failed', e);
+                }
+                
+                sel.removeAllRanges();
+            }
+            if (highlightToolbar) {
+                highlightToolbar.remove();
+                highlightToolbar = null;
+            }
+        }
+
+        function removeHighlight() {
+            const sel = window.getSelection();
+            if (!sel.isCollapsed && sel.toString().trim()) {
+                const range = sel.getRangeAt(0);
+                let container = range.commonAncestorContainer;
+                if (container.nodeType === 3) container = container.parentNode;
+                
+                const highlights = container.querySelectorAll ? container.querySelectorAll('.highlight-yellow, .highlight-green') : [];
+                highlights.forEach(el => {
+                    if (range.intersectsNode(el)) {
+                        el.outerHTML = el.innerHTML;
+                    }
+                });
+                sel.removeAllRanges();
+            }
+            if (highlightToolbar) {
+                highlightToolbar.remove();
+                highlightToolbar = null;
+            }
+        }
+
+        function handleSelection(e) {
+            const sel = window.getSelection();
+            if (!sel.isCollapsed && sel.toString().trim()) {
+                const range = sel.getRangeAt(0);
+                const rect = range.getBoundingClientRect();
+                if (rect.width > 0) {
+                    createHighlightToolbar(rect);
+                }
+            } else if (highlightToolbar) {
+                highlightToolbar.remove();
+                highlightToolbar = null;
+            }
+        }
+
+        document.getElementById('passage-container').addEventListener('mouseup', handleSelection);
+        document.getElementById('questions-container').addEventListener('mouseup', handleSelection);
+
+        document.addEventListener('mousedown', e => {
+            if (highlightToolbar && !highlightToolbar.contains(e.target)) {
+                highlightToolbar.remove();
+                highlightToolbar = null;
+            }
+        });
+
+        // Track Answers & Progress
+        const progressItems = document.querySelectorAll('.progress-item');
+        function updateProgress() {
+            let answered = 0;
+            
+            for (let i = 1; i <= 6; i++) {
+                const select = document.querySelector(`select[name="q${i}"]`);
+                if (select && select.value) {
+                    progressItems[i-1].classList.add('completed');
+                    answered++;
+                } else {
+                    progressItems[i-1].classList.remove('completed');
+                }
+            }
+            for (let i = 7; i <= 13; i++) {
+                const input = document.querySelector(`input[name="q${i}"]`);
+                if (input && input.value.trim() !== '') {
+                    progressItems[i-1].classList.add('completed');
+                    answered++;
+                } else {
+                    progressItems[i-1].classList.remove('completed');
+                }
+            }
+            return answered;
+        }
+
+        document.querySelectorAll('select, input').forEach(el => {
+            el.addEventListener('change', updateProgress);
+            el.addEventListener('input', updateProgress);
+        });
+
+        // Reset
+        document.getElementById('reset-btn').addEventListener('click', () => {
+            document.querySelectorAll('select').forEach(s => s.value = '');
+            document.querySelectorAll('input[type="text"]').forEach(i => i.value = '');
+            
+            document.querySelectorAll('.highlight-yellow, .highlight-green').forEach(h => {
+                h.outerHTML = h.innerHTML;
+            });
+            
+            updateProgress();
+            document.getElementById('feedback-overlay').style.display = 'none';
+            
+            clearInterval(timerInterval);
+            timerRunning = false;
+            seconds = 1200;
+            updateTimer();
+        });
+
+        // CORRECT ANSWERS for Katherine Mansfield
+        const correctAnswers = {
+            1: 'FALSE', 2: 'NOT GIVEN', 3: 'TRUE', 4: 'FALSE', 5: 'FALSE', 6: 'TRUE',
+            7: '1906', 8: 'Australia', 9: 'family', 10: 'bankruptcy', 11: 'writers', 12: 'reputation', 13: 'husband'
+        };
+
+        const explanations = {
+            1: 'Pen name, not original name.',
+            2: 'No mention of a prize.',
+            3: 'Maori portrayed in sympathetic light.',
+            4: 'Planned to be cellist, not writer.',
+            5: 'She was appreciated by students.',
+            6: 'Did not support suffragette movement.',
+            7: 'Returned to NZ in 1906.',
+            8: 'First paid work in Australia.',
+            9: 'Discontent with family and lifestyle.',
+            10: 'Murry’s bankruptcy.',
+            11: 'Spent time with distinguished writers.',
+            12: 'Reputation consolidated with Bliss.',
+            13: 'Her husband published her works.'
+        };
+
+        const references = {
+            1: 'Para 1', 2: 'Para 2', 3: 'Para 2', 4: 'Para 3', 5: 'Para 3', 6: 'Para 3',
+            7: 'Para 4', 8: 'Para 4', 9: 'Para 5', 10: 'Para 6', 11: 'Para 7', 12: 'Para 7', 13: 'Para 9'
+        };
+
+        // Submit & Feedback
+        document.getElementById('submit-btn').addEventListener('click', () => {
+            if (timerRunning) pauseTimer.click();
+            
+            const feedbackBody = document.getElementById('feedback-body');
+            feedbackBody.innerHTML = '';
+            let correct = 0;
+
+            for (let i = 1; i <= 13; i++) {
+                let userAnswer = '';
+                let isCorrect = false;
+                let questionText = '';
+
+                if (i <= 6) {
+                    const select = document.querySelector(`select[name="q${i}"]`);
+                    userAnswer = select?.value || 'Not answered';
+                    isCorrect = userAnswer.toUpperCase() === correctAnswers[i].toUpperCase();
+                    const qDiv = document.getElementById(`q${i}`);
+                    if (qDiv) {
+                        questionText = qDiv.querySelector('.question-content')?.innerText.trim() || '';
+                    }
+                } else {
+                    const input = document.querySelector(`input[name="q${i}"]`);
+                    userAnswer = input?.value.trim() || 'Not answered';
+                    isCorrect = userAnswer.toLowerCase() === correctAnswers[i].toLowerCase();
+                    const container = input?.closest('.blue-box-question');
+                    if (container) {
+                        questionText = container.querySelector('.question-text')?.innerText.trim() || '';
+                    }
+                }
+
+                if (isCorrect) correct++;
+
+                const item = document.createElement('div');
+                item.className = 'feedback-item';
+                item.innerHTML = `
+                    <div class="feedback-question">
+                        <span class="${isCorrect ? 'correct' : 'incorrect'}">Question ${i}:</span>
+                        ${isCorrect ? '<i class="fas fa-check correct"></i>' : '<i class="fas fa-times incorrect"></i>'}
+                    </div>
+                    <p><em>${questionText || `Question ${i}`}</em></p>
+                    <div><strong>Your Answer:</strong> ${userAnswer}</div>
+                    ${!isCorrect ? `<div><strong>Correct Answer:</strong> ${correctAnswers[i]}</div>` : ''}
+                    <div class="feedback-explanation"><strong>Explanation:</strong> ${explanations[i]}</div>
+                    <div class="feedback-passage"><strong>Reference:</strong> ${references[i]}</div>
+                `;
+                feedbackBody.appendChild(item);
+            }
+
+            document.getElementById('score-display').textContent = `${correct}/13`;
+            document.getElementById('feedback-overlay').style.display = 'flex';
+        });
+
+        document.getElementById('close-feedback').onclick = () => {
+            document.getElementById('feedback-overlay').style.display = 'none';
+        };
+
+        document.getElementById('feedback-overlay').onclick = (e) => {
+            if (e.target === document.getElementById('feedback-overlay')) {
+                e.target.style.display = 'none';
+            }
+        };
+
+        updateTimer();
+        updateProgress();
+    </script>
+</body>
+</html>

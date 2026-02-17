@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Listening Practice – Sections 3 & 4</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            line-height: 1.4;
+            font-size: 16px;
+            padding-bottom: 90px;
+        }
+        header {
+            background-color: #ff0a0a;
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .social-link {
+            display: flex; align-items: center; gap: 8px; color: white;
+            padding: 8px 15px; border-radius: 50px; text-decoration: none;
+            font-weight: 600; font-size: 14px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .social-link:hover { transform: translateY(-1px); }
+        .social-link i { font-size: 1.2em; }
+        .social-link.telegram { background-color: #ff0000; }
+        .main-container { margin-top: 60px; padding: 20px; padding-bottom: 100px; }
+        .hidden { display: none; }
+        .question-part { margin-bottom: 40px; }
+        .part-header {
+            background-color: #f1f2ec; padding: 15px; border-radius: 5px;
+            margin-bottom: 20px; border: 1px solid #e0e0e0;
+        }
+        .part-header p { margin: 0; }
+        .question { margin-bottom: 30px; }
+        .question-prompt {
+            margin-bottom: 20px; padding: 15px; background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .answer-input, .answer-select {
+            border: 1px solid #888; border-radius: 4px; background-color: #fff;
+            padding: 4px 8px; font-size: 16px; text-align: center;
+            margin: 0 5px; width: 80px; max-width: 100px;
+        }
+        .answer-input.correct, .answer-select.correct { border-color: #28a745; background-color: #e9f7ef; }
+        .answer-input.incorrect, .answer-select.incorrect { border-color: #dc3545; background-color: #f8d7da; color: #721c24; }
+        .single-choice-container { margin: 10px 0; display: flex; flex-direction: column; gap: 18px; }
+        .single-choice { padding: 10px; border-left: 3px solid #4a90e2; background-color: #f8f9fa; }
+        .single-choice label {
+            display: block; margin-left: 20px; margin-top: 4px;
+            font-size: 16px; cursor: pointer;
+        }
+        .single-choice label.correct { color: #155724; font-weight: bold; }
+        .single-choice label.incorrect { color: #721c24; text-decoration: line-through; }
+        .nav-arrows {
+            position: fixed; bottom: 100px; right: 20px; display: flex; gap: 5px; z-index: 101;
+        }
+        .nav-arrow {
+            width: 50px; height: 50px; background: #333; color: white;
+            border: none; cursor: pointer; display: flex; align-items: center;
+            justify-content: center; font-size: 22px; font-weight: bold;
+        }
+        .nav-row {
+            position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff;
+            padding: 0; display: flex; align-items: center; height: 80px;
+            z-index: 100; overflow-x: auto; white-space: nowrap;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        .footer__questionWrapper___1tZ46 {
+            display: flex; align-items: center; margin-right: 20px; flex-shrink: 0;
+        }
+        .footer__questionNo___3WNct {
+            background: none; border: none; padding: 10px 15px;
+            font-size: 16px; font-weight: 600; color: #333; cursor: pointer;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .footer__subquestionWrapper___9GgoP { display: none; gap: 2px; margin-left: 10px; }
+        .footer__questionWrapper___1tZ46.selected .footer__subquestionWrapper___9GgoP { display: flex; }
+        .subQuestion {
+            width: 32px; height: 32px; border: 1px solid #ccc; background: white;
+            color: #333; font-size: 14px; font-weight: 500; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; border-radius: 2px;
+        }
+        .subQuestion.correct { background-color: #28a745; color: white; }
+        .subQuestion.incorrect { background-color: #dc3545; color: white; }
+        .subQuestion.active { background-color: #f80c0c; color: white; }
+        .footer__deliverButton___3FM07 {
+            margin-left: auto; margin-right: 20px; background-color: #f0f0f0;
+            color: #333; border: 1px solid #ccc; padding: 12px 20px;
+            border-radius: 4px; font-size: 16px; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .result-button { background-color: #28a745 !important; color: white !important; border: none !important; }
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6); z-index: 2000; display: flex;
+            justify-content: center; align-items: center; padding: 20px;
+        }
+        .modal-content {
+            background: white; padding: 25px; border-radius: 8px;
+            width: 100%; max-width: 800px; max-height: 90vh; overflow-y: auto;
+        }
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid #ddd; padding-bottom: 15px; margin-bottom: 20px;
+        }
+        #result-details table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        #result-details th, #result-details td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        .result-correct { color: #28a745; font-weight: bold; }
+        .result-incorrect { color: #dc3545; font-weight: bold; }
+        @media (max-width: 768px) {
+            .main-container { padding: 10px; }
+            .answer-input, .answer-select { width: 70px; min-width: 60px; }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-area">
+            <a href="https://t.me/IELTS_CDEXAM" class="social-link telegram" target="_blank">
+                <i class="fab fa-telegram-plane"></i> <span>IELTS_CDEXAM</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Part 3 -->
+        <div id="part-3" class="question-part">
+            <div class="part-header">
+                <p><strong>PART 3</strong></p>
+                <p>Questions 21–30</p>
+            </div>
+
+            <!-- Questions 21–26: Multiple Choice -->
+            <div class="question">
+                <div class="question-prompt">
+                    <p><strong>Questions 21 – 26</strong></p>
+                    <p>Choose the correct letter <strong>A</strong>, <strong>B</strong> or <strong>C</strong>.</p>
+                    <h4>Kathy's dissertation on water pumps</h4>
+                </div>
+                <div class="single-choice-container">
+                    <div class="single-choice">
+                        <p><strong>21</strong> What part of Kathy's dissertation has the tutor just read?</p>
+                        <label><input type="radio" name="q21" value="A"> A her results section</label>
+                        <label><input type="radio" name="q21" value="B"> B her introductory chapter</label>
+                        <label><input type="radio" name="q21" value="C"> C her review of the literature</label>
+                    </div>
+                    <div class="single-choice">
+                        <p><strong>22</strong> What did the tutor like about Kathy's work?</p>
+                        <label><input type="radio" name="q22" value="A"> A the organisation</label>
+                        <label><input type="radio" name="q22" value="B"> B the style of writing</label>
+                        <label><input type="radio" name="q22" value="C"> C the use of resources</label>
+                    </div>
+                    <div class="single-choice">
+                        <p><strong>23</strong> Kathy and the tutor agree that she needs to</p>
+                        <label><input type="radio" name="q23" value="A"> A do some more library research.</label>
+                        <label><input type="radio" name="q23" value="B"> B record more data</label>
+                        <label><input type="radio" name="q23" value="C"> C narrow down her topic.</label>
+                    </div>
+                    <div class="single-choice">
+                        <p><strong>24</strong> Why does the tutor give an example from his own experience?</p>
+                        <label><input type="radio" name="q24" value="A"> A to show how successful he has become</label>
+                        <label><input type="radio" name="q24" value="B"> B to illustrate how times have changed</label>
+                        <label><input type="radio" name="q24" value="C"> C to encourage Kathy to do something similar</label>
+                    </div>
+                    <div class="single-choice">
+                        <p><strong>25</strong> Kathy would like the tutor to advise her on her</p>
+                        <label><input type="radio" name="q25" value="A"> A layout.</label>
+                        <label><input type="radio" name="q25" value="B"> B bibliography.</label>
+                        <label><input type="radio" name="q25" value="C"> C appendices.</label>
+                    </div>
+                    <div class="single-choice">
+                        <p><strong>26</strong> What is Kathy going to do next?</p>
+                        <label><input type="radio" name="q26" value="A"> A try out some software</label>
+                        <label><input type="radio" name="q26" value="B"> B go to a seminar</label>
+                        <label><input type="radio" name="q26" value="C"> C design a new type of pump</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questions 27–30: Matching with Dropdowns -->
+            <div class="question">
+                <div class="question-prompt">
+                    <p><strong>Questions 27 – 30</strong></p>
+                    <p>How will Kathy benefit from doing each of the following activities?</p>
+                    <p>Choose <strong>FOUR</strong> answers from the box and write the correct letter, <strong>A–F</strong>, next to questions <strong>27–30</strong>.</p>
+                    <div style="margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; display: inline-block;">
+                        <p><strong>Benefits</strong></p>
+                        <label style="display: block;">A broadens practical experience of the field</label>
+                        <label style="display: block;">B chance to publicise own work</label>
+                        <label style="display: block;">C effective way of keeping up-to-date</label>
+                        <label style="display: block;">D looks good on a CV</label>
+                        <label style="display: block;">E provides useful access to resources</label>
+                        <label style="display: block;">F way to make useful contacts</label>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <p><strong>Activities</strong></p>
+                        <p style="margin: 8px 0;"><strong>27</strong> going to Mechanical Engineers’ Society meetings 
+                            <select id="q27" class="answer-select">
+                                <option value="" disabled selected>Select</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                                <option value="E">E</option>
+                                <option value="F">F</option>
+                            </select>
+                        </p>
+                        <p style="margin: 8px 0;"><strong>28</strong> visiting different workplaces 
+                            <select id="q28" class="answer-select">
+                                <option value="" disabled selected>Select</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                                <option value="E">E</option>
+                                <option value="F">F</option>
+                            </select>
+                        </p>
+                        <p style="margin: 8px 0;"><strong>29</strong> getting some work experience abroad 
+                            <select id="q29" class="answer-select">
+                                <option value="" disabled selected>Select</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                                <option value="E">E</option>
+                                <option value="F">F</option>
+                            </select>
+                        </p>
+                        <p style="margin: 8px 0;"><strong>30</strong> attending an international conference 
+                            <select id="q30" class="answer-select">
+                                <option value="" disabled selected>Select</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                                <option value="E">E</option>
+                                <option value="F">F</option>
+                            </select>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Part 4 -->
+        <div id="part-4" class="question-part hidden">
+            <div class="part-header">
+                <p><strong>PART 4</strong></p>
+                <p>Questions 31–40</p>
+            </div>
+            <div class="question">
+                <div class="question-prompt">
+                    <p>Complete the notes below.</p>
+                    <p>Write <strong>ONE WORD ONLY</strong> for each answer.</p>
+                </div>
+                <div style="padding: 20px; border: 1px solid #000;">
+                    <h3 style="text-align: center; margin-bottom: 20px;">Food Safety Standards</h3>
+                    <h4>Risk assessment</h4>
+                    <p>Scientists have to consider potential problems with:</p>
+                    <ul>
+                        <li>the product's <input type="text" id="q31" class="answer-input" placeholder="31" style="width: 180px;"> (could they attract harmful bacteria?)</li>
+                        <li>method of preparation (will it eliminate harmful micro-organisms?)</li>
+                        <li>how products are <input type="text" id="q32" class="answer-input" placeholder="32" style="width: 180px;"> and distributed</li>
+                        <li>supermarkets (e.g. changes in <input type="text" id="q33" class="answer-input" placeholder="33" style="width: 180px;"> affecting the condition of frozen food)</li>
+                        <li>end-users (how is food usually handled in the home?)</li>
+                    </ul>
+                    <h4>Factors affecting food consumption</h4>
+                    <p><strong>Legislation</strong></p>
+                    <p><strong>Consumer attitudes</strong></p>
+                    <ul>
+                        <li>e.g. dislike of additives → growth of the <input type="text" id="q34" class="answer-input" placeholder="34" style="width: 180px;"> food market in Australia</li>
+                    </ul>
+                    <p><strong>The food industry</strong></p>
+                    <ul>
+                        <li>supermarkets may use price or <input type="text" id="q35" class="answer-input" placeholder="35" style="width: 180px;"> as their selling strategy (but the main concern is profitability)</li>
+                    </ul>
+                    <p><strong>The mass media</strong></p>
+                    <ul>
+                        <li>now the main source of <input type="text" id="q36" class="answer-input" placeholder="36" style="width: 180px;"> for many</li>
+                        <li>negative effect because not objective:</li>
+                        <li style="margin-left: 20px;">concern for <input type="text" id="q37" class="answer-input" placeholder="37" style="width: 180px;"></li>
+                        <li style="margin-left: 20px;">news is now a form of <input type="text" id="q38" class="answer-input" placeholder="38" style="width: 180px;"> which can mislead the public</li>
+                        <li>few programmes deal with food safety or <input type="text" id="q39" class="answer-input" placeholder="39" style="width: 180px;"></li>
+                    </ul>
+                    <p><strong>Personal opinion</strong></p>
+                    <p>Importance of education: as with benefits of exercise, many children can influence their <input type="text" id="q40" class="answer-input" placeholder="40" style="width: 180px;">.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-arrows">
+        <button class="nav-arrow" onclick="previousPart()" id="prevBtn">‹</button>
+        <button class="nav-arrow" onclick="nextPart()" id="nextBtn">›</button>
+    </div>
+
+    <nav class="nav-row">
+        <div class="footer__questionWrapper___1tZ46 selected">
+            <button class="footer__questionNo___3WNct" onclick="switchToPart(3)">Part 3</button>
+            <div class="footer__subquestionWrapper___9GgoP">
+                <button class="subQuestion" onclick="goToQuestion(21)">21</button>
+                <button class="subQuestion" onclick="goToQuestion(22)">22</button>
+                <button class="subQuestion" onclick="goToQuestion(23)">23</button>
+                <button class="subQuestion" onclick="goToQuestion(24)">24</button>
+                <button class="subQuestion" onclick="goToQuestion(25)">25</button>
+                <button class="subQuestion" onclick="goToQuestion(26)">26</button>
+                <button class="subQuestion" onclick="goToQuestion(27)">27</button>
+                <button class="subQuestion" onclick="goToQuestion(28)">28</button>
+                <button class="subQuestion" onclick="goToQuestion(29)">29</button>
+                <button class="subQuestion" onclick="goToQuestion(30)">30</button>
+            </div>
+        </div>
+        <div class="footer__questionWrapper___1tZ46">
+            <button class="footer__questionNo___3WNct" onclick="switchToPart(4)">Part 4</button>
+            <div class="footer__subquestionWrapper___9GgoP">
+                <button class="subQuestion" onclick="goToQuestion(31)">31</button>
+                <button class="subQuestion" onclick="goToQuestion(32)">32</button>
+                <button class="subQuestion" onclick="goToQuestion(33)">33</button>
+                <button class="subQuestion" onclick="goToQuestion(34)">34</button>
+                <button class="subQuestion" onclick="goToQuestion(35)">35</button>
+                <button class="subQuestion" onclick="goToQuestion(36)">36</button>
+                <button class="subQuestion" onclick="goToQuestion(37)">37</button>
+                <button class="subQuestion" onclick="goToQuestion(38)">38</button>
+                <button class="subQuestion" onclick="goToQuestion(39)">39</button>
+                <button class="subQuestion" onclick="goToQuestion(40)">40</button>
+            </div>
+        </div>
+        <button id="deliver-button" class="footer__deliverButton___3FM07"><span>Check Answers</span></button>
+    </nav>
+
+    <div id="result-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Your Results (Sections 3 & 4)</h2>
+                <button id="modal-close-button">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="score-summary"></p>
+                <div id="result-details"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPart = 3;
+
+        const correctAnswers = {
+            'q21': 'B', 'q22': 'A', 'q23': 'B', 'q24': 'C', 'q25': 'C', 'q26': 'A',
+            'q27': 'F', 'q28': 'C', 'q29': 'A', 'q30': 'B',
+            'q31': 'ingredients', 'q32': 'stored', 'q33': 'temperature',
+            'q34': 'organic', 'q35': 'image', 'q36': 'information',
+            'q37': 'sales', 'q38': 'entertainment', 'q39': 'nutrition', 'q40': 'parents'
+        };
+
+        function switchToPart(part) {
+            currentPart = part;
+            document.querySelectorAll('.question-part').forEach(p => p.classList.add('hidden'));
+            document.getElementById(`part-${part}`).classList.remove('hidden');
+            document.querySelectorAll('.footer__questionWrapper___1tZ46').forEach(w => w.classList.remove('selected'));
+            document.querySelectorAll('.footer__questionWrapper___1tZ46')[part - 3].classList.add('selected');
+            updateNavigation();
+        }
+
+        function goToQuestion(q) {
+            const part = q <= 30 ? 3 : 4;
+            if (currentPart !== part) switchToPart(part);
+            document.querySelectorAll('.subQuestion').forEach(btn => btn.classList.remove('active'));
+            const btn = document.querySelector(`.subQuestion[onclick="goToQuestion(${q})"]`);
+            if (btn) btn.classList.add('active');
+            const el = document.getElementById(`q${q}`) || document.querySelector(`input[name="q${q}"]:checked`)?.closest('.single-choice');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function previousPart() { if (currentPart > 3) switchToPart(currentPart - 1); }
+        function nextPart() { if (currentPart < 4) switchToPart(currentPart + 1); }
+
+        function updateNavigation() {
+            document.getElementById('prevBtn').disabled = currentPart === 3;
+            document.getElementById('nextBtn').disabled = currentPart === 4;
+        }
+
+        function checkAnswers() {
+            let score = 0;
+            const results = [];
+
+            // Reset feedback
+            document.querySelectorAll('.correct, .incorrect').forEach(el => el.classList.remove('correct', 'incorrect'));
+            document.querySelectorAll('.subQuestion').forEach(btn => btn.classList.remove('correct', 'incorrect'));
+
+            for (let q = 21; q <= 40; q++) {
+                const key = `q${q}`;
+                const correct = correctAnswers[key];
+                let userAnswer = '';
+                let isCorrect = false;
+
+                if (q >= 21 && q <= 26) {
+                    // Radio buttons
+                    const selected = document.querySelector(`input[name="${key}"]:checked`);
+                    userAnswer = selected ? selected.value : '';
+                    isCorrect = userAnswer === correct;
+                    if (selected) {
+                        selected.closest('label').classList.add(isCorrect ? 'correct' : 'incorrect');
+                    }
+                } else if (q >= 27 && q <= 30) {
+                    // Dropdown select
+                    const select = document.getElementById(key);
+                    userAnswer = select.value;
+                    isCorrect = userAnswer === correct;
+                    select.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else if (q >= 31 && q <= 40) {
+                    // Text input
+                    const input = document.getElementById(key);
+                    userAnswer = input.value.trim().toLowerCase();
+                    isCorrect = userAnswer === correct.toLowerCase();
+                    input.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+
+                if (isCorrect) score++;
+
+                const btn = document.querySelector(`.subQuestion[onclick="goToQuestion(${q})"]`);
+                if (btn) {
+                    btn.classList.toggle('correct', isCorrect);
+                    if (!isCorrect) btn.classList.add('incorrect');
+                }
+
+                results.push({
+                    question: q,
+                    userAnswer: userAnswer || '—',
+                    correctAnswer: correct,
+                    isCorrect
+                });
+            }
+
+            showResults(score, results);
+        }
+
+        function showResults(score, data) {
+            document.getElementById('score-summary').textContent = `You scored ${score} out of 20.`;
+            let tbl = '<table><tr><th>Q</th><th>Your Answer</th><th>Correct</th><th>Result</th></tr>';
+            data.forEach(r => {
+                tbl += `<tr><td>${r.question}</td><td>${r.userAnswer}</td><td>${r.correctAnswer}</td>
+                        <td class="${r.isCorrect ? 'result-correct' : 'result-incorrect'}">
+                        ${r.isCorrect ? 'Correct' : 'Incorrect'}</td></tr>`;
+            });
+            tbl += '</table>';
+            document.getElementById('result-details').innerHTML = tbl;
+            document.getElementById('result-modal').style.display = 'flex';
+            const btn = document.getElementById('deliver-button');
+            btn.classList.add('result-button');
+            btn.innerHTML = '<span>My Result</span>';
+        }
+
+        document.getElementById('deliver-button').addEventListener('click', checkAnswers);
+        document.getElementById('modal-close-button').addEventListener('click', () => {
+            document.getElementById('result-modal').style.display = 'none';
+        });
+
+        // Initialize
+        switchToPart(3);
+        updateNavigation();
+    </script>
+</body>
+</html>
