@@ -1,24 +1,17 @@
+<!-- =========================
+     sitemap.xml
+     ========================= -->
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://the-engtest.netlify.app/</loc></url>
 
-<url>
-  <loc>https://the-engtest.netlify.app/</loc>
-</url>
+  <url><loc>https://the-engtest.netlify.app/reading-tests/test1.html</loc></url>
+  <url><loc>https://the-engtest.netlify.app/reading-tests/test2.html</loc></url>
+  <url><loc>https://the-engtest.netlify.app/reading-tests/test3.html</loc></url>
+  <url><loc>https://the-engtest.netlify.app/reading-tests/test4.html</loc></url>
 
-<url>
-  <loc>https://the-engtest.netlify.app/reading-tests/test1.html</loc>
-</url>
-
-<url>
-  <loc>https://the-engtest.netlify.app/reading-tests/test2.html</loc>
-</url>
-
-<url>
-  <loc>https://the-engtest.netlify.app/listening-tests/test1.html</loc>
-</url>
-
-<url>
-  <loc>https://the-engtest.netlify.app/listening-tests/test2.html</loc>
-</url>
-
+  <url><loc>https://the-engtest.netlify.app/listening-tests/test1.html</loc></url>
+  <url><loc>https://the-engtest.netlify.app/listening-tests/test2.html</loc></url>
+  <url><loc>https://the-engtest.netlify.app/listening-tests/test3.html</loc></url>
+  <url><loc>https://the-engtest.netlify.app/listening-tests/test4.html</loc></url>
 </urlset>
